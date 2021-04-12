@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * @package Plugin
  * @subpackage Metabox
- * @author Codexpert <hello@codexpert.io>
+ * @author Codexpert <hi@codexpert.io>
  */
 class Metabox extends Fields {
 

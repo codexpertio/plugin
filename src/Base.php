@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * @package Plugin
  * @subpackage Base
- * @author Codexpert <hello@codexpert.io>
+ * @author Codexpert <hi@codexpert.io>
  */
 abstract class Base {
 

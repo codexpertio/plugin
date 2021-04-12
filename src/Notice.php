@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * @package Plugin
  * @subpackage Notice
- * @author Codexpert <hello@codexpert.io>
+ * @author Codexpert <hi@codexpert.io>
  */
 class Notice extends Base {
 	
