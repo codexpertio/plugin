@@ -294,7 +294,7 @@ class License {
 			'item_id'	=> $this->plugin['item_id'],
 			'pb-nonce'	=> wp_create_nonce( 'codexpert' ),
 			'track'		=> base64_encode( $this->license_page )
-		], $this->get_activation_page() );
+		], trailingslashit( $this->get_activation_page() ) );
 
 		return apply_filters( 'codexpert-activation_url', $activation_url, $this->plugin );
 	}
