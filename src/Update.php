@@ -164,7 +164,7 @@ class Update {
 	public function plugin_row_meta( $plugin_meta, $plugin_file ) {
 		
 		if ( $this->basename === $plugin_file ) {
-			$plugin_meta['check'] = '<a href="' . add_query_arg( 'cx-recheck', $this->slug, admin_url( 'plugins.php' ) ) . '">' . __( 'Check for update', 'pluggable' ) . '</a>';
+			$plugin_meta['check'] = '<a href="' . add_query_arg( 'cx-recheck', $this->slug, admin_url( 'plugins.php' ) ) . '">' . __( 'Check for update', 'codexpert' ) . '</a>';
 		}
 
 		return $plugin_meta;

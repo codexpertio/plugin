@@ -43,7 +43,7 @@ class License {
 	public function hooks() {
 		register_activation_hook( $this->plugin['file'], [ $this, 'activate' ] );
 		register_deactivation_hook( $this->plugin['file'], [ $this, 'deactivate' ] );
-		add_action( 'pluggable-daily', [ $this, 'validate' ] );
+		add_action( 'codexpert-daily', [ $this, 'validate' ] );
 		add_action( 'admin_init', [ $this, 'init' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ], 99 );
 		add_action( 'admin_notices', [ $this, 'admin_notices' ] );
@@ -51,13 +51,13 @@ class License {
 	}
 
 	public function activate() {
-		if ( ! wp_next_scheduled ( 'pluggable-daily' ) ) {
-		    wp_schedule_event( time(), 'daily', 'pluggable-daily' );
+		if ( ! wp_next_scheduled ( 'codexpert-daily' ) ) {
+		    wp_schedule_event( time(), 'daily', 'codexpert-daily' );
 		}
 	}
 
 	public function deactivate() {
-		wp_clear_scheduled_hook( 'pluggable-daily' );
+		wp_clear_scheduled_hook( 'codexpert-daily' );
 	}
 
 	public function validate() {
@@ -76,7 +76,7 @@ class License {
 		if( !isset( $_GET['pb-license'] ) ) return;
 
 		if( $_GET['pb-license'] == 'deactivate' ) {
-			if( ! wp_verify_nonce( $_GET['pb-nonce'], 'pluggable' ) ) {
+			if( ! wp_verify_nonce( $_GET['pb-nonce'], 'codexpert' ) ) {
 				// print an error message. maybe store in a temporary session and print later?
 			}
 			else {
@@ -85,7 +85,7 @@ class License {
 		}
 
 		elseif( $_GET['pb-license'] == 'activate' ) {
-			if( ! wp_verify_nonce( $_GET['pb-nonce'], 'pluggable' ) || $_GET['key'] == '' ) {
+			if( ! wp_verify_nonce( $_GET['pb-nonce'], 'codexpert' ) || $_GET['key'] == '' ) {
 				// print an error message. maybe store in a temporary session and print later?
 			}
 			else {
@@ -101,7 +101,7 @@ class License {
 	}
 
 	public function enqueue_scripts() {
-		wp_enqueue_style( 'pluggable-product-license', plugins_url( 'assets/css/license.css', __FILE__ ), [], $this->plugin['Version'] );
+		wp_enqueue_style( 'codexpert-product-license', plugins_url( 'assets/css/license.css', __FILE__ ), [], $this->plugin['Version'] );
 		// wp_enqueue_script( 'codexpert-product-license', plugins_url( 'assets/js/license.js', __FILE__ ), [ 'jquery' ], $this->plugin['Version'], true );
 	}
 
@@ -113,13 +113,13 @@ class License {
 		if( ! $this->_is_activated() ) {
 			echo '
 			<div class="pl-notice notice notice-error">
-				<p class="pl-desc">' . sprintf( __( '<strong>Notice:</strong> Please activate your license for <strong><i>%s</i></strong>. The plugin won\'t work without activation!', 'pluggable' ), $this->name ) . '<a href="' . $this->license_page . '" class="button button-primary" style="margin-left:50px;">Click Here</a>' . '</p>
+				<p class="pl-desc">' . sprintf( __( '<strong>Notice:</strong> Please activate your license for <strong><i>%s</i></strong>. The plugin won\'t work without activation!', 'codexpert' ), $this->name ) . '<a href="' . $this->license_page . '" class="button button-primary" style="margin-left:50px;">Click Here</a>' . '</p>
 			</div>';
 		}
-		elseif( $this->_is_activated() && ( $this->_is_invalid() || $this->_is_expired() ) && apply_filters( 'pluggable-show_validation_notice', true, $this->plugin ) ) {
+		elseif( $this->_is_activated() && ( $this->_is_invalid() || $this->_is_expired() ) && apply_filters( 'codexpert-show_validation_notice', true, $this->plugin ) ) {
 			echo '
 			<div class="pl-notice notice notice-error">
-				<p class="pl-desc">' . sprintf( __( '<strong>Attention:</strong> Did you change your site URL? It looks like <strong>%1$s</strong> cannot connect to our server and is unable to receive updates! 😢', 'pluggable' ), $this->name ) . '<a href="' . $this->get_deactivation_url() . '" class="button button-primary" style="margin-left:50px;">Reconnect Now</a>' . '</p>
+				<p class="pl-desc">' . sprintf( __( '<strong>Attention:</strong> Did you change your site URL? It looks like <strong>%1$s</strong> cannot connect to our server and is unable to receive updates! 😢', 'codexpert' ), $this->name ) . '<a href="' . $this->get_deactivation_url() . '" class="button button-primary" style="margin-left:50px;">Reconnect Now</a>' . '</p>
 			</div>';
 		}
 	}
@@ -129,19 +129,19 @@ class License {
 
 		if( ! $this->_is_activated() ) {
 			$activation_url = $this->get_activation_url();
-			$activate_label	= apply_filters( "{$this->slug}_activate_label", __( 'Activate', 'pluggable' ), $this->plugin );
+			$activate_label	= apply_filters( "{$this->slug}_activate_label", __( 'Activate', 'codexpert' ), $this->plugin );
 
-			$html .= '<p class="pl-desc">' . sprintf( __( 'Thanks for installing <strong>%1$s</strong> 👋', 'pluggable' ), $this->name ) . '</p>';
-			$html .= '<p class="pl-desc">' . __( 'In order to make the plugin work, you need to activate the license by clicking the button below. Please reach out to us if you need any help.', 'pluggable' ) . '</p>';
+			$html .= '<p class="pl-desc">' . sprintf( __( 'Thanks for installing <strong>%1$s</strong> 👋', 'codexpert' ), $this->name ) . '</p>';
+			$html .= '<p class="pl-desc">' . __( 'In order to make the plugin work, you need to activate the license by clicking the button below. Please reach out to us if you need any help.', 'codexpert' ) . '</p>';
 			$html .= "<a id='pl-activate' class='pl-button button button-primary' href='{$activation_url}'>" . $activate_label . "</a>";
 		}
 
 		else {
 			$deactivation_url	= $this->get_deactivation_url();
-			$deactivate_label	= apply_filters( "{$this->slug}_deactivate_label", __( 'Deactivate', 'pluggable' ), $this->plugin );
+			$deactivate_label	= apply_filters( "{$this->slug}_deactivate_label", __( 'Deactivate', 'codexpert' ), $this->plugin );
 			
-			$html .= '<p class="pl-desc">' . __( 'Congratulations! 🎉', 'pluggable' ) . '</p>';
-			$html .= '<p class="pl-desc">' . sprintf( __( 'The license for <strong>%s</strong> is activated. You can deactivate the license by clicking the button below.', 'pluggable' ), $this->name ) . '</p>';
+			$html .= '<p class="pl-desc">' . __( 'Congratulations! 🎉', 'codexpert' ) . '</p>';
+			$html .= '<p class="pl-desc">' . sprintf( __( 'The license for <strong>%s</strong> is activated. You can deactivate the license by clicking the button below.', 'codexpert' ), $this->name ) . '</p>';
 			$html .= "<a id='pl-deactivate' class='pl-button button button-secondary' href='{$deactivation_url}'>" . $deactivate_label . "</a>";
 		}
 
@@ -154,7 +154,7 @@ class License {
 	}
 
 	public function register_endpoints() {
-		register_rest_route( 'pluggable', 'license', [
+		register_rest_route( 'codexpert', 'license', [
 			'methods'				=> 'GET',
 			'callback'				=> [ $this, 'callback_action' ],
 			'permission_callback'	=> '__return_true'
@@ -179,7 +179,7 @@ class License {
 
 		$_response = [
 			'status'	=> false,
-			'message'	=> __( 'Something is wrong', 'pluggable' ),
+			'message'	=> __( 'Something is wrong', 'codexpert' ),
 			'data'		=> []
 		];
 
@@ -196,7 +196,7 @@ class License {
 
 		// make sure the response came back okay
 		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			$_response['message'] = is_wp_error( $response ) ? $response->get_error_message() : __( 'An error occurred, please try again.', 'pluggable' );
+			$_response['message'] = is_wp_error( $response ) ? $response->get_error_message() : __( 'An error occurred, please try again.', 'codexpert' );
 		}
 
 		// it's an activation request
@@ -208,7 +208,7 @@ class License {
 					case 'expired' :
 
 						$_response['message'] = sprintf(
-							__( 'Your license key expired on %s.', 'pluggable' ),
+							__( 'Your license key expired on %s.', 'codexpert' ),
 							date_i18n( get_option( 'date_format' ), strtotime( $license_data->expires, current_time( 'timestamp' ) ) )
 						);
 						break;
@@ -216,33 +216,33 @@ class License {
 					case 'disabled' :
 					case 'revoked' :
 
-						$_response['message'] = __( 'Your license key has been disabled.', 'pluggable' );
+						$_response['message'] = __( 'Your license key has been disabled.', 'codexpert' );
 						break;
 
 					case 'missing' :
 
-						$_response['message'] = __( 'Invalid license.', 'pluggable' );
+						$_response['message'] = __( 'Invalid license.', 'codexpert' );
 						break;
 
 					case 'invalid' :
 					case 'site_inactive' :
 
-						$_response['message'] = __( 'Your license is not active for this URL.', 'pluggable' );
+						$_response['message'] = __( 'Your license is not active for this URL.', 'codexpert' );
 						break;
 
 					case 'item_name_mismatch' :
 
-						$_response['message'] = sprintf( __( 'This appears to be an invalid license key for %s.', 'pluggable' ), $item_name );
+						$_response['message'] = sprintf( __( 'This appears to be an invalid license key for %s.', 'codexpert' ), $item_name );
 						break;
 
 					case 'no_activations_left':
 
-						$_response['message'] = __( 'Your license key has reached its activation limit.', 'pluggable' );
+						$_response['message'] = __( 'Your license key has reached its activation limit.', 'codexpert' );
 						break;
 
 					default :
 
-						$_response['message'] = __( 'An error occurred, please try again.', 'pluggable' );
+						$_response['message'] = __( 'An error occurred, please try again.', 'codexpert' );
 						break;
 				}
 
@@ -255,7 +255,7 @@ class License {
 				update_option( $this->get_license_expiry_name(), ( $license_data->expires == 'lifetime' ? 4765132799 : strtotime( $license_data->expires ) ) );
 
 				$_response['status']	= $license_data;
-				$_response['message']	= __( 'License activated', 'pluggable' );
+				$_response['message']	= __( 'License activated', 'codexpert' );
 			} 
 
 		}
@@ -268,7 +268,7 @@ class License {
 				delete_option( $this->get_license_expiry_name() );
 
 				$_response['status']	= true;
-				$_response['message'] = __( 'License deactivated', 'pluggable' );
+				$_response['message'] = __( 'License deactivated', 'codexpert' );
 			}
 		}
 
@@ -276,10 +276,10 @@ class License {
 		elseif( $action == 'check' ) {
 			if( isset( $license_data->license ) && $license_data->license == 'valid' ) {
 				$_response['status']	= true;
-				$_response['message']	= __( 'License valid', 'pluggable' );
+				$_response['message']	= __( 'License valid', 'codexpert' );
 			} else {
 				$_response['status']	= false;
-				$_response['message']	= __( 'License invalid', 'pluggable' );
+				$_response['message']	= __( 'License invalid', 'codexpert' );
 			}
 		}
 
@@ -288,29 +288,29 @@ class License {
 
 	public function get_activation_url() {
 		$query					= isset( $_GET ) ? $_GET : [];
-		$query['pb-nonce']		= wp_create_nonce( 'pluggable' );
+		$query['pb-nonce']		= wp_create_nonce( 'codexpert' );
 
 		$activation_url = add_query_arg( [
 			'item_id'	=> $this->plugin['item_id'],
-			'pb-nonce'	=> wp_create_nonce( 'pluggable' ),
+			'pb-nonce'	=> wp_create_nonce( 'codexpert' ),
 			'track'		=> base64_encode( $this->license_page )
 		], $this->get_activation_page() );
 
-		return apply_filters( 'pluggable-activation_url', $activation_url, $this->plugin );
+		return apply_filters( 'codexpert-activation_url', $activation_url, $this->plugin );
 	}
 
 	public function get_deactivation_url() {
 		$query					= isset( $_GET ) ? $_GET : [];
-		$query['pb-nonce']		= wp_create_nonce( 'pluggable' );
+		$query['pb-nonce']		= wp_create_nonce( 'codexpert' );
 		$query['pb-license']	= 'deactivate';
 
 		$deactivation_url = add_query_arg( $query, $this->license_page );
 
-		return apply_filters( 'pluggable-deactivation_url', $deactivation_url, $this->plugin );
+		return apply_filters( 'codexpert-deactivation_url', $deactivation_url, $this->plugin );
 	}
 
 	public function get_activation_page() {
-		return apply_filters( 'pluggable-activation_page', "{$this->server}/connect", $this->plugin );
+		return apply_filters( 'codexpert-activation_page', "{$this->server}/connect", $this->plugin );
 	}
 
 	// option_key in the wp_options table
@@ -354,6 +354,6 @@ class License {
 	}
 
 	public function _is_forced() {
-		return apply_filters( 'pluggable-is_forced', ( $this->_is_invalid() || $this->_is_expired() ), $this->plugin );
+		return apply_filters( 'codexpert-is_forced', ( $this->_is_invalid() || $this->_is_expired() ), $this->plugin );
 	}
 }
