@@ -1,5 +1,5 @@
 {
-    "name": "Codexpert/Plugin",
+    "name": "codexpert/plugin",
     "type": "library",
     "description": "Plugin tools for Codexpert",
     "keywords": ["plugin","codexpert"],

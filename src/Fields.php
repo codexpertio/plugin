@@ -1,5 +1,5 @@
 <?php
-namespace Codexpert\Plugin;
+namespace codexpert\plugin;
 
 /**
  * if accessed directly, exit.
