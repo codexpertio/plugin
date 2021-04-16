@@ -51,10 +51,9 @@ class Metabox extends Fields {
 	}
 
 	public function enqueue_scripts() {
-
-		if( !isset( $_GET['post'] ) || !in_array( get_post_type( $_GET['post'] ), (array) $this->config['post_type'] ) ) return;
-		
-		parent::enqueue_scripts();
+		if( get_the_ID() != '' && in_array( get_post_type( get_the_ID() ), (array) $this->config['post_type'] ) ) {
+			parent::enqueue_scripts();
+		}
     }
 
 	public function add_meta_box() {
