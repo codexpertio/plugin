@@ -15,9 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 abstract class Fields extends Base {
 
-	function hooks() {
-		if( did_action( 'cx-plugin_loaded' ) ) return;
-		do_action( 'cx-plugin_loaded' );
+	public function hooks() {
+		if( did_action( "cx-plugin_{$this->config['id']}_loaded" ) ) return;
+		do_action( "cx-plugin_{$this->config['id']}_loaded" );
 
 		$this->action( 'admin_head', 'callback_head', 99 );
 	}
