@@ -117,6 +117,7 @@ jQuery(function ($) {
     })
 
     $(document).on('click', '.cx-repeater-remove', function(e){
+        if($('.cx-repeatable').length <= 1 ) return;
         $(this).closest('.cx-repeatable').remove()
     })
 });
