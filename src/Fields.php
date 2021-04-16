@@ -262,6 +262,9 @@ abstract class Fields extends Base {
 	}
 
 	public function get_value( $field, $section, $default = '', $scope = 'option' ) {
+
+		if( isset( $field['value'] ) ) return $field['value'];
+
 		if( $scope == 'option' ) {
 			$section_values = get_option( $section['id'] );
 		}
@@ -511,7 +514,7 @@ abstract class Fields extends Base {
 	}
 
 	public function field_tabs( $field, $section, $scope ) {
-		$tabs = $field['tabs'];
+		$tabs = $field['items'];
 		$html = $buttons = $content = '';
 
 
@@ -555,6 +558,37 @@ abstract class Fields extends Base {
 		$html .= '<nav class="cx-tabs">' . $buttons . '</nav>';
 		$html .= $content;
 		$html .= $style;
+
+		return $html;
+	}
+
+	public function field_repeater( $field, $section, $scope ) {
+		$items = $field['items'];
+		$html = '';
+
+		$values = $this->get_value( $field, $section, [], $scope ) ? : [];
+		
+		$count = 0;
+
+		for( $i = 0; $i < ( is_array( reset( $values ) ) ? count( reset( $values ) ) : 1 ); $i++ ) {
+			$html .= '<div class="cx-repeatable">';
+			foreach ( $items as $item ) {
+				$item['class'] = ' cx-field-group';
+				$item['default'] = isset( $item['default'] ) ? $item['default'] : '';
+				$item['value'] = isset( $values[ $item['id'] ][ $count ] ) ? $values[ $item['id'] ][ $count ] : $item['default'];
+
+				$item['id'] = "{$field['id']}[{$item['id']}][]";
+
+				$html .= $this->populate( $item, $section, $scope );
+			}
+
+			$html .= '<button type="button" class="cx-repeater-remove">-</button>';
+			$html .= '<button type="button" class="cx-repeater-add">+</button>';
+			
+			$html .= '</div>';
+
+			$count++;
+		}
 
 		return $html;
 	}

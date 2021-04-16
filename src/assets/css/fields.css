@@ -250,6 +250,12 @@
 .cx-heading {
     padding-bottom: 20px !important;
 }
+.cx-repeatable {
+    padding-bottom: 10px;
+}
+.cx-repeatable > * {
+    margin-right: 10px;
+}
 @media only screen and (min-width: 320px) {
     .cx-sections-wrapper {
         width: 73.5%;

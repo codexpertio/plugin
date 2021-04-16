@@ -111,4 +111,12 @@ jQuery(function ($) {
         $(this).addClass('cx-tab-active')
         $('#'+target).show()
     })
+
+    $(document).on('click', '.cx-repeater-add', function(e){
+        $(this).parent().before($(this).parent().clone()).find('input,select,textarea').val('')
+    })
+
+    $(document).on('click', '.cx-repeater-remove', function(e){
+        $(this).closest('.cx-repeatable').remove()
+    })
 });
