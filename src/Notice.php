@@ -75,7 +75,7 @@ class Notice extends Base {
 			
 				echo "
 					<div class='notice notice-error'>
-						<p>" . sprintf( __( 'In order to <strong>%1$s</strong> run properly, <strong>%2$s</strong> needs to be activated.<a href="%3$s" class="button button-primary" style="margin-left:50px;">%4$s %2$s Now</a>', 'cx-plugin' ), $this->name, $plugin_name, $action_link, $button_text ) . "</p>
+						<p class='pl-desc'>" . sprintf( __( 'In order to <strong>%1$s</strong> run properly, <strong>%2$s</strong> needs to be activated.<a href="%3$s" class="button button-primary" style="margin-left:50px;">%4$s %2$s Now</a>', 'cx-plugin' ), $this->name, $plugin_name, $action_link, $button_text ) . "</p>
 					</div>
 				";
 			}

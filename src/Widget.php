@@ -111,7 +111,7 @@ class Widget extends Base {
 			$post_link = add_query_arg( $utm, $post['link'] );
 			echo "
 			<li>
-				<a href='{$post_link}' target='_blank'><span aria-hidden='true' class='cx-post-title-icon dashicons dashicons-external'></span> <span class='cx-post-title'>{$post['title']['rendered']}</span></a>
+				<a href='{$post_link}' target='_blank'><span class='cx-post-title'>{$post['title']['rendered']}</span></a>
 				" . wpautop( wp_trim_words( $post['content']['rendered'], 10 ) ) . "
 			</li>";
 		}
@@ -122,19 +122,19 @@ class Widget extends Base {
 		$_links = apply_filters( 'cx-overview_links', [
 			'products'	=> [
 				'url'		=> add_query_arg( $utm, 'https://codexpert.io/products/' ),
-				'label'		=> __( 'Products', 'cx-plugin' ),
+				'label'		=> __( 'Our Plugins', 'cx-plugin' ),
 				'target'	=> '_blank',
 			],
 			'hire'	=> [
-				'url'		=> add_query_arg( $utm, 'https://codexpert.io/hire/' ),
-				'label'		=> __( 'Hire Us', 'cx-plugin' ),
+				'url'		=> add_query_arg( $utm, 'https://codexpert.io/blog/' ),
+				'label'		=> __( 'Blog', 'cx-plugin' ),
 				'target'	=> '_blank',
 			],
 		] );
 
 		$footer_links = [];
 		foreach ( $_links as $id => $link ) {
-			$_has_icon = ( $link['target'] == '_blank' ) ? '<span class="screen-reader-text">' . __( '(opens in a new tab)', 'cx-plugin' ) . '</span><span aria-hidden="true" class="dashicons dashicons-external"></span>' : '';
+			$_has_icon = ( $link['target'] == '_blank' ) ? '<span class="screen-reader-text">' . __( '(opens in a new tab)', 'cx-plugin' ) . '</span> <span aria-hidden="true" class="dashicons dashicons-external"></span>' : '';
 
 			$footer_links[] = "<a href='{$link['url']}' target='{$link['target']}'>{$link['label']}{$_has_icon}</a>";
 		}
