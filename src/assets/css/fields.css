@@ -260,6 +260,55 @@
 .cx-repeatable > * {
     margin-right: 10px;
 }
+.cx-toggle {
+  cursor: pointer;
+  display: block;
+  margin-bottom: 8px;
+}
+.cx-toggle-switch {
+  display: inline-block;
+  background: #ccc;
+  border-radius: 16px;
+  width: 58px;
+  height: 32px;
+  position: relative;
+  vertical-align: middle;
+  transition: background 0.25s;
+}
+.cx-toggle-switch:before, .cx-toggle-switch:after {
+  content: "";
+}
+.cx-toggle-switch:before {
+  display: block;
+  background: linear-gradient(to bottom, #fff 0%, #eee 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  transition: left 0.25s;
+}
+.cx-toggle:hover .cx-toggle-switch:before {
+  background: linear-gradient(to bottom, #fff 0%, #fff 100%);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+}
+.cx-toggle-checkbox:checked + .cx-toggle-switch {
+  background: #56c080;
+}
+.cx-toggle-checkbox:checked + .cx-toggle-switch:before {
+  left: 30px;
+}
+.cx-toggle-checkbox {
+  position: absolute;
+  visibility: hidden;
+}
+.cx-toggle-label {
+  margin-left: 5px;
+  position: relative;
+  top: 2px;
+}
 @media only screen and (min-width: 320px) {
     .cx-sections-wrapper {
         width: 73.5%;
