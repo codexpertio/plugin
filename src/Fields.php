@@ -264,7 +264,11 @@ abstract class Fields extends Base {
 			$callback_fn = "field_{$field['type']}";
 		}
 
-		return $this->$callback_fn( $field, $section, $scope );
+		if( method_exists( $this, $callback_fn ) ) {
+			return $this->$callback_fn( $field, $section, $scope );
+		}
+
+		return __( 'Invalid field type', 'cx-plugin' );
 	}
 
 	public function get_value( $field, $section, $default = '', $scope = 'option' ) {
