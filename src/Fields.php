@@ -207,12 +207,12 @@ abstract class Fields extends Base {
 
 			if( isset( $field['type'] ) && $field['type'] == 'divider' ) {
 				$style = isset( $field['style'] ) ? $field['style'] : '';
-				$html .= "<div class='cx-row cx-divider' id='cx-row-{$section['id']}-{$field['id']}' style='{$style}'><span>{$field['label']}</span></div>";
+				$html .= "<div class='cx-row cx-divider' id='{$section['id']}-{$field['id']}' style='{$style}'><span>{$field['label']}</span></div>";
 			}
 			else {
 				$field_display = isset( $field['condition'] ) && is_array( $field['condition'] ) ? 'none' : '';
 				$html .= "
-				<div class='cx-row' id='cx-row-{$section['id']}-{$field['id']}' style='display: {$field_display}'>";
+				<div id='cx-row-{$section['id']}-{$field['id']}' class='cx-row cx-row-{$section['id']} cx-row-{$field['type']}' style='display: {$field_display}'>";
 
 				if( $_show_label ) {
 					$html .= "<div class='cx-label-wrap'>";
@@ -394,6 +394,47 @@ abstract class Fields extends Base {
 		}
 		else {
 			$html .= "<input type='checkbox' name='{$name}' id='{$id}' class='{$class}' value='on' {$required} {$disabled} " . checked( $value, 'on', false ) . "/>";
+		}
+
+		return $html;
+	}
+
+	public function field_switch( $field, $section, $scope ) {
+		$default		= isset( $field['default'] ) ? $field['default'] : '';
+		$value			= $this->get_value( $field, $section, $default, $scope );
+
+		$name 			= $scope == 'option' ? $field['id'] : "{$section['id']}[{$field['id']}]";
+		$label 			= $field['label'];
+		$id 			= "{$section['id']}-{$field['id']}";
+
+		$class 			= "cx-field cx-field-{$field['type']}";
+		$class 			.= isset( $field['class'] ) ? $field['class'] : '';
+
+		$placeholder	= isset( $field['placeholder'] ) ? $field['placeholder'] : '';
+		$required 		= isset( $field['required'] ) && $field['required'] ? " required" : "";
+		$disabled 		= isset( $field['disabled'] ) && $field['disabled'] ? " disabled" : "";
+		$multiple 		= isset( $field['multiple'] ) && $field['multiple'];
+		$options 		= isset( $field['options'] ) ? $field['options'] : [];
+
+		$html  = '';
+		if( $multiple ) {
+			foreach ( $options as $key => $title ) {
+				$html .= "
+					<label class='cx-toggle'>
+						<input type='checkbox' name='{$name}[]' id='{$id}-{$key}' class='cx-toggle-checkbox {$class}' value='{$key}' {$required} {$disabled} " . ( in_array( $key, (array)$value ) ? 'checked' : '' ) . "/>
+						<div class='cx-toggle-switch'></div>
+						<span class='cx-toggle-label'>{$title}</span>
+					</label>
+				";
+			}
+		}
+		else {
+			$html .= "
+				<label class='cx-toggle'>
+					<input type='checkbox' name='{$name}' id='{$id}' class='cx-toggle-checkbox {$class}' value='on' {$required} {$disabled} " . checked( $value, 'on', false ) . "/>
+					<div class='cx-toggle-switch'></div>
+				</label>
+			";
 		}
 
 		return $html;
