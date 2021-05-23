@@ -124,9 +124,15 @@ abstract class Fields extends Base {
 
 			echo "<div id='{$section['id']}' class='cx-section' style='display:none'>";
 
+			echo "<div class='cx-subheading'>";
+			
 			do_action( 'cx-settings-before-title', $section );
 			
-			echo "<h3 class='cx-subheading'><span style='color: {$color}'>{$icon}</span> {$section['label']}</h3>";
+			echo "<span style='color: {$color}'>{$icon}</span> <span class='cx-subheading-text'>{$section['label']}</span>";
+			
+			do_action( 'cx-settings-after-title', $section );
+			
+			echo "</div>";
 			
 			if( isset( $section['desc'] ) && $section['desc'] != '' ) {
 				echo "<p class='cx-desc'>{$section['desc']}</p>";

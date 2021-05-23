@@ -67,6 +67,10 @@
 .cx-subheading {
     border-bottom: 1px solid #ddd;
     padding-bottom: 18px;
+    padding-top: 18px;
+}
+.cx-subheading-text {
+    font-size: 1.3rem;
 }
 .cx-label-wrap {
     vertical-align: top;
