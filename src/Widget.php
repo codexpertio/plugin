@@ -51,7 +51,9 @@ class Widget extends Base {
 		    wp_schedule_event( time(), 'daily', 'codexpert-daily' );
 		}
 
-		$this->daily();
+		if( get_option( 'codexpert-blog-json' ) == '' ) {
+			$this->daily();
+		}
 	}
 
 	/**
