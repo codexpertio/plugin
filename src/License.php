@@ -162,6 +162,9 @@ class License {
 	}
 
 	public function callback_action( $request ) {
+		
+		add_filter( 'codexpert-is_forced', '__return_true' );
+		
 		$parameters = $request->get_params();
 		return $this->do( $parameters['action'], $parameters['license_key'], $parameters['item_name'] );
 	}
