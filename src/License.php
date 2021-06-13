@@ -23,6 +23,11 @@ class License {
 	
 	public $license_page;
 
+	/**
+	 * Is it in the validating state?
+	 */
+	public $validating = false;
+
 	public function __construct( $plugin ) {
 
 		$this->plugin 	= $plugin;
@@ -62,6 +67,12 @@ class License {
 
 	public function validate() {
 		if( $this->_is_activated() ) {
+
+			/**
+			 * It's in the validating state
+			 */
+			$this->validating = true;
+
 			$validation = $this->do( 'check', $this->get_license_key(), $this->name ) ;
 			if( $validation['status'] != true ) {
 				update_option( $this->get_license_status_name(), 'invalid' );
@@ -177,7 +188,7 @@ class License {
 	 */
 	public function do( $action, $license, $item_name ) {
 
-		if( did_action( "_{$this->slug}_did_license_action" ) ) return;
+		if( did_action( "_{$this->slug}_did_license_action" ) && $this->validating !== true ) return;
 		do_action( "_{$this->slug}_did_license_action" );
 
 		$_response = [
