@@ -146,7 +146,7 @@
 .cx-field-wrap .cx-field-textarea,
 .cx-field-wrap .cx-field-url {
     width: 100%;
-    max-width: 400px;
+    max-width: 600px;
 }
 select.cx-field-select:disabled {
     background-image: none;
