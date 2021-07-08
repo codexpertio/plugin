@@ -201,7 +201,7 @@ class Table extends \WP_List_Table {
             $order = $_GET['order'];
         }
 
-        $result = strcmp( $a[ $orderby ], $b[ $orderby ] );
+        $result = strnatcmp( $a[ $orderby ], $b[ $orderby ] );
 
         if( $order === 'asc' ) {
             return $result;
