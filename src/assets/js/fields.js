@@ -87,10 +87,11 @@ jQuery(function ($) {
     $(".cx-browse").on("click", function (event) {
         event.preventDefault();
         var self = $(this);
+        var parent = $(this).parent()
         var file_frame = (wp.media.frames.file_frame = wp.media({ title: self.data("title"), button: { text: self.data("select-text") }, multiple: !1 }));
         file_frame.on("select", function () {
             attachment = file_frame.state().get("selection").first().toJSON();
-            $(".cx-file").val(attachment.url);
+            $(".cx-file", parent).val(attachment.url);
             $(".supports-drag-drop").hide();
         });
         file_frame.open();
