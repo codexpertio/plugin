@@ -79,6 +79,7 @@ class License {
 			}
 			else {
 				update_option( $this->get_license_status_name(), 'valid' );
+				update_option( $this->get_license_expiry_name(), ( $validation['data']->expires == 'lifetime' ? 4765132799 : strtotime( $validation['data']->expires ) ) );
 			}
 		}
 	}
@@ -291,6 +292,7 @@ class License {
 			if( isset( $license_data->license ) && $license_data->license == 'valid' ) {
 				$_response['status']	= true;
 				$_response['message']	= __( 'License valid', 'codexpert' );
+				$_response['data']		= $license_data;
 			} else {
 				$_response['status']	= false;
 				$_response['message']	= __( 'License invalid', 'codexpert' );
