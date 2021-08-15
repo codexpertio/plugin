@@ -160,9 +160,15 @@ abstract class Fields extends Base {
 
 			do_action( 'cx-settings-before-fields', $section );
 
-			if( isset( $section['content'] ) && $section['content'] != '' ) echo $section['content'];
-
-			echo $this->populate_fields( $fields, $section, $scope );
+			if( isset( $section['content'] ) && $section['content'] != '' ) {
+				echo $section['content'];
+			}
+			elseif( isset( $section['template'] ) && $section['template'] != '' && file_exists( $section['template'] ) ) {
+				include $section['template'];
+			}
+			else {
+				echo $this->populate_fields( $fields, $section, $scope );
+			}
 
 			do_action( 'cx-settings-after-fields', $section );
 
