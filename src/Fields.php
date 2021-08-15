@@ -166,7 +166,7 @@ abstract class Fields extends Base {
 			elseif( isset( $section['template'] ) && $section['template'] != '' && file_exists( $section['template'] ) ) {
 				include $section['template'];
 			}
-			else {
+			elseif( isset( $section['fields'] ) && is_array( $section['fields'] ) ) {
 				echo $this->populate_fields( $fields, $section, $scope );
 			}
 
