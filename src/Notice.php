@@ -79,8 +79,9 @@ class Notice extends Base {
 
 		if( is_array( $cx_notices ) && count( $cx_notices ) ) {
 			foreach( $cx_notices as $notice ) {
+				$is_dismissible = isset( $notice['dismissible'] ) && $notice['dismissible'] ? 'is-dismissible': '';
 				echo "
-					<div class='notice notice-{$notice['type']} cx-notice cx-shadow'>
+					<div class='notice notice-{$notice['type']} {$is_dismissible} cx-notice cx-shadow'>
 						<p>" . $notice['text'] . "</p>
 					</div>
 				";
@@ -88,12 +89,13 @@ class Notice extends Base {
 		}
 	}
 
-	public static function add( $text = 'lorem', $type = 'error' )  {
+	public static function add( $text = '', $type = 'error', $dismissible = false )  {
 		global $cx_notices;
 
 		$cx_notices[] = [
-			'text'	=> $text,
-			'type'	=> $type,
+			'text'			=> $text,
+			'type'			=> $type,
+			'dismissible'	=> $dismissible,
 		];
 	}
 
