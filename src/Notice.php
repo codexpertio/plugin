@@ -79,9 +79,9 @@ class Notice extends Base {
 
 		if( is_array( $cx_notices ) && count( $cx_notices ) ) {
 			foreach( $cx_notices as $notice ) {
-				$is_dismissible = isset( $notice['dismissible'] ) && $notice['dismissible'] ? 'is-dismissible': '';
+				$is_dismissible = isset( $notice['dismissible'] ) && $notice['dismissible'] ? ' is-dismissible': '';
 				echo "
-					<div class='notice notice-{$notice['type']} {$is_dismissible} cx-notice cx-shadow'>
+					<div class='notice notice-{$notice['type']}{$is_dismissible} cx-notice cx-shadow'>
 						<p>" . $notice['text'] . "</p>
 					</div>
 				";
