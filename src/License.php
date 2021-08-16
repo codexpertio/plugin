@@ -51,7 +51,7 @@ class License {
 		add_action( 'codexpert-daily', [ $this, 'validate' ] );
 		add_action( 'admin_init', [ $this, 'init' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ], 99 );
-		add_action( 'admin_notices', [ $this, 'admin_notices' ] );
+		add_action( 'plugins_loaded', [ $this, 'gather_notices' ] );
 		add_action( 'rest_api_init', [ $this, 'register_endpoints' ] );
 	}
 
@@ -114,25 +114,20 @@ class License {
 
 	public function enqueue_scripts() {
 		wp_enqueue_style( 'codexpert-product-license', plugins_url( 'assets/css/license.css', __FILE__ ), [], $this->plugin['Version'] );
-		// wp_enqueue_script( 'codexpert-product-license', plugins_url( 'assets/js/license.js', __FILE__ ), [ 'jquery' ], $this->plugin['Version'], true );
 	}
 
-	public function admin_notices() {
+	public function gather_notices() {
 
 		if( did_action( "_license_{$this->slug}_notice" ) ) return;
 		do_action( "_license_{$this->slug}_notice" );
 
+		global $cx_notices;
+
 		if( ! $this->_is_activated() ) {
-			echo '
-			<div class="notice notice-error cx-notice cx-shadow">
-				<p class="pl-desc">' . sprintf( __( '<strong>Notice:</strong> Please activate your license for <strong><i>%s</i></strong>. The plugin won\'t work without activation!', 'codexpert' ), $this->name ) . '<a href="' . $this->license_page . '" class="button button-primary">Click Here</a>' . '</p>
-			</div>';
+			Notice::add( sprintf( __( '<strong>Notice:</strong> Please activate your license for <strong><i>%s</i></strong>. The plugin won\'t work without activation!', 'codexpert' ), $this->name ) . '<a href="' . $this->license_page . '" class="button button-primary">Click Here</a>' );
 		}
 		elseif( $this->_is_activated() && ( $this->_is_invalid() || $this->_is_expired() ) && apply_filters( 'codexpert-show_validation_notice', true, $this->plugin ) ) {
-			echo '
-			<div class="notice notice-error cx-notice cx-shadow">
-				<p class="pl-desc">' . sprintf( __( '<strong>Attention:</strong> Did you change your site URL? It looks like <strong>%1$s</strong> cannot connect to our server and is unable to receive updates! 😢', 'codexpert' ), $this->name ) . '<a href="' . $this->get_deactivation_url() . '" class="button button-primary">Reconnect Now</a>' . '</p>
-			</div>';
+			Notice::add( sprintf( __( '<strong>Attention:</strong> Did you change your site URL? It looks like <strong>%1$s</strong> cannot connect to our server and is unable to receive updates! 😢', 'codexpert' ), $this->name ) . '<a href="' . $this->get_deactivation_url() . '" class="button button-primary">Reconnect Now</a>' );
 		}
 	}
 
@@ -143,18 +138,18 @@ class License {
 			$activation_url = $this->get_activation_url();
 			$activate_label	= apply_filters( "{$this->slug}_activate_label", __( 'Activate', 'codexpert' ), $this->plugin );
 
-			$html .= '<p class="pl-desc">' . sprintf( __( 'Thanks for installing <strong>%1$s</strong> 👋', 'codexpert' ), $this->name ) . '</p>';
-			$html .= '<p class="pl-desc">' . __( 'In order to make the plugin work, you need to activate the license by clicking the button below. Please reach out to us if you need any help.', 'codexpert' ) . '</p>';
-			$html .= "<a id='pl-activate' class='pl-button button button-primary' href='{$activation_url}'>" . $activate_label . "</a>";
+			$html .= '<p class="cx-desc">' . sprintf( __( 'Thanks for installing <strong>%1$s</strong> 👋', 'codexpert' ), $this->name ) . '</p>';
+			$html .= '<p class="cx-desc">' . __( 'In order to make the plugin work, you need to activate the license by clicking the button below. Please reach out to us if you need any help.', 'codexpert' ) . '</p>';
+			$html .= "<a id='cx-activate' class='cx-button button button-primary' href='{$activation_url}'>" . $activate_label . "</a>";
 		}
 
 		else {
 			$deactivation_url	= $this->get_deactivation_url();
 			$deactivate_label	= apply_filters( "{$this->slug}_deactivate_label", __( 'Deactivate', 'codexpert' ), $this->plugin );
 			
-			$html .= '<p class="pl-desc">' . __( 'Congratulations! 🎉', 'codexpert' ) . '</p>';
-			$html .= '<p class="pl-desc">' . sprintf( __( 'The license for <strong>%s</strong> is activated. You can deactivate the license by clicking the button below.', 'codexpert' ), $this->name ) . '</p>';
-			$html .= "<a id='pl-deactivate' class='pl-button button button-secondary' href='{$deactivation_url}'>" . $deactivate_label . "</a>";
+			$html .= '<p class="cx-desc">' . __( 'Congratulations! 🎉', 'codexpert' ) . '</p>';
+			$html .= '<p class="cx-desc">' . sprintf( __( 'The license for <strong>%s</strong> is activated. You can deactivate the license by clicking the button below.', 'codexpert' ), $this->name ) . '</p>';
+			$html .= "<a id='cx-deactivate' class='cx-button button button-secondary' href='{$deactivation_url}'>" . $deactivate_label . "</a>";
 		}
 
 		return apply_filters( "{$this->slug}_activation_form", $html, $this->plugin );

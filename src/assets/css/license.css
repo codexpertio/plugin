@@ -1,4 +1,4 @@
-.pl-button.button {
+.cx-button.button {
 	width: 200px;
 	height: 40px;
 	font-size: 18px;
@@ -8,10 +8,10 @@
 	font-weight: 300;
 	margin-top: 10px;
 }
-.pl-title {
+.cx-title {
 	margin: 10px 0 5px 0;
 }
-.pl-desc {
+.cx-desc {
 	font-size: 15px;
 	margin: 0 0 10px 0;
 }

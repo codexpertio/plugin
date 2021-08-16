@@ -151,15 +151,15 @@ class Survey extends Base {
     public function admin_notices() {
         if( get_option( "{$this->slug}_survey" ) != 1 && ( get_option( "{$this->slug}_installed" ) < time() - $this->get_delay() ) ) :
         ?>
-        <div id="<?php echo $this->slug; ?>-survey-notice" class="notice notice-success is-dismissible cx-survey-notice cx-notice" data-slug="<?php echo $this->slug; ?>">
+        <div id="<?php echo $this->slug; ?>-survey-notice" class="notice notice-success is-dismissible cx-survey cx-notice cx-shadow" data-slug="<?php echo $this->slug; ?>">
 
-        	<img class="cx-notice-img" src="<?php echo plugins_url( 'assets/img/survey.png', __FILE__ ); ?>" />
-            <div class="cx-notice-content">
+        	<img class="cx-survey-img" src="<?php echo plugins_url( 'assets/img/survey.png', __FILE__ ); ?>" />
+            <div class="cx-survey-content">
                 <?php echo $this->get_heading(); ?>
                 <?php echo $this->get_message(); ?>
             </div>
-            <p class="cx-notice-btn-wrapper">
-                <button class="button button-primary button-hero cx-notice-btn" data-participate="1">
+            <p class="cx-survey-btn-wrapper">
+                <button class="button button-primary button-hero cx-survey-btn" data-participate="1">
                 	<?php echo $this->get_button_text(); ?>
                 </button>
             </p>
