@@ -1,7 +1,6 @@
 .notice.cx-notice {
     padding: 5px 15px;
     border: 0px solid #f1f1f1;
-    transition: all 0.3s;
 }
 .notice .cx-notice-content h3 {
     padding: 0;
