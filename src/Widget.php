@@ -100,11 +100,11 @@ class Widget extends Base {
 	 */
 	public function callback_dashboard_widget() {
 		$posts = get_option( 'codexpert-blog-json', [] );
+		$utm = [ 'utm_source' => 'dashboard', 'utm_medium' => 'metabox', 'utm_campaign' => 'blog-post' ];
 		
-		if( count( $posts ) > 0 ) :
+		if( is_array( $posts ) && count( $posts ) > 0 ) :
 		
 		$posts = array_slice( $posts, 0, 5 );
-		$utm = [ 'utm_source' => 'dashboard', 'utm_medium' => 'metabox', 'utm_campaign' => 'blog-post' ];
 
 		echo '<ul id="cx-posts-wrapper">';
 		
