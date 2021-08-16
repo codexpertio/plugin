@@ -124,14 +124,14 @@ class License {
 
 		if( ! $this->_is_activated() ) {
 			echo '
-			<div class="pl-notice notice notice-error">
-				<p class="pl-desc">' . sprintf( __( '<strong>Notice:</strong> Please activate your license for <strong><i>%s</i></strong>. The plugin won\'t work without activation!', 'codexpert' ), $this->name ) . '<a href="' . $this->license_page . '" class="button button-primary" style="margin-left:50px;">Click Here</a>' . '</p>
+			<div class="notice notice-error cx-notice cx-shadow">
+				<p class="pl-desc">' . sprintf( __( '<strong>Notice:</strong> Please activate your license for <strong><i>%s</i></strong>. The plugin won\'t work without activation!', 'codexpert' ), $this->name ) . '<a href="' . $this->license_page . '" class="button button-primary">Click Here</a>' . '</p>
 			</div>';
 		}
 		elseif( $this->_is_activated() && ( $this->_is_invalid() || $this->_is_expired() ) && apply_filters( 'codexpert-show_validation_notice', true, $this->plugin ) ) {
 			echo '
-			<div class="pl-notice notice notice-error">
-				<p class="pl-desc">' . sprintf( __( '<strong>Attention:</strong> Did you change your site URL? It looks like <strong>%1$s</strong> cannot connect to our server and is unable to receive updates! 😢', 'codexpert' ), $this->name ) . '<a href="' . $this->get_deactivation_url() . '" class="button button-primary" style="margin-left:50px;">Reconnect Now</a>' . '</p>
+			<div class="notice notice-error cx-notice cx-shadow">
+				<p class="pl-desc">' . sprintf( __( '<strong>Attention:</strong> Did you change your site URL? It looks like <strong>%1$s</strong> cannot connect to our server and is unable to receive updates! 😢', 'codexpert' ), $this->name ) . '<a href="' . $this->get_deactivation_url() . '" class="button button-primary">Reconnect Now</a>' . '</p>
 			</div>';
 		}
 	}

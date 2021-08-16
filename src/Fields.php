@@ -96,7 +96,7 @@ abstract class Fields extends Base {
 		if( !isset( $this->sections ) || count( $this->sections ) <= 0 ) return;
 
 		$tab_position = isset( $config['tab_position'] ) ? $config['tab_position'] : 'left';
-		echo "<div class='cx-wrapper cx-tab-{$tab_position}'>";
+		echo "<div class='cx-wrapper cx-shadow cx-tab-{$tab_position}'>";
 
 		$sections = $this->sections;
 
@@ -173,11 +173,11 @@ abstract class Fields extends Base {
 			do_action( 'cx-settings-after-fields', $section );
 
 			if( $scope == 'option' && $show_form ) :
-			$_is_sticky = isset( $section['sticky'] ) && !$section['sticky'] ? '' : ' cx-sticky-controls';
+			$_is_sticky = isset( $section['sticky'] ) && !$section['sticky'] ? ' cx-nonsticky-controls' : ' cx-sticky-controls';
 			echo "<div class='cx-controls-wrapper{$_is_sticky}'>";
 
-			if( $reset_button ) echo "<button type='button' class='button cx-reset-button' data-option_name='{$section['id']}' data-_nonce='{$_nonce}'>{$reset_button}</button>&nbsp;";
-			if( $submit_button ) echo "<input type='submit' class='button button-primary cx-submit' value='{$submit_button}' />";
+			if( $reset_button ) echo "<button type='button' class='button button-hero cx-reset-button' data-option_name='{$section['id']}' data-_nonce='{$_nonce}'>{$reset_button}</button>&nbsp;";
+			if( $submit_button ) echo "<input type='submit' class='button button-hero button-primary cx-submit' value='{$submit_button}' />";
 			echo '</div class="cx-controls-wrapper">
 				</form>';
 			endif; // if( $show_form ) :

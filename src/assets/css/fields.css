@@ -62,7 +62,6 @@
     background: #fff;
     color: #444;
     border-left: none;
-    margin-bottom: 40px;
 }
 .cx-subheading {
 	border-bottom: 1px solid #ddd;
@@ -182,6 +181,13 @@ select.cx-field-select:disabled {
 .chosen-container,
 .select2-container {
     width: 100%;
+}
+.cx-nonsticky-controls {
+    margin: 30px auto;
+    text-align: center;
+}
+.cx-nonsticky-controls .button-hero {
+    margin-right: 10px;
 }
 .cx-sticky-controls {
     width: 69%;

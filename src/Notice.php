@@ -44,7 +44,7 @@ class Notice extends Base {
 		
 		if( version_compare( get_bloginfo( 'version' ), $this->plugin['min_wp'], '<' ) ) {
 			echo "
-				<div class='notice notice-error'>
+				<div class='notice notice-error cx-notice cx-shadow'>
 					<p>" . sprintf( __( '<strong>%s</strong> requires <i>WordPress version %s</i> or higher. You have <i>version %s</i> installed.', 'cx-plugin' ), $this->name, $this->plugin['min_wp'], get_bloginfo( 'version' ) ) . "</p>
 				</div>
 			";
@@ -52,7 +52,7 @@ class Notice extends Base {
 
 		if( version_compare( PHP_VERSION, $this->plugin['min_php'], '<' ) ) {
 			echo "
-				<div class='notice notice-error'>
+				<div class='notice notice-error cx-notice cx-shadow'>
 					<p>" . sprintf( __( '<strong>%s</strong> requires <i>PHP version %s</i> or higher. You have <i>version %s</i> installed.', 'cx-plugin' ), $this->name, $this->plugin['min_php'], PHP_VERSION ) . "</p>
 				</div>
 			";
@@ -74,8 +74,8 @@ class Notice extends Base {
 				$action_link = array_key_exists( $plugin, $installed_plugins ) ? $action_links['activate'] : $action_links['install'];
 			
 				echo "
-					<div class='notice notice-error'>
-						<p class='pl-desc'>" . sprintf( __( 'In order to <strong>%1$s</strong> run properly, <strong>%2$s</strong> needs to be activated.<a href="%3$s" class="button button-primary" style="margin-left:50px;">%4$s %2$s Now</a>', 'cx-plugin' ), $this->name, $plugin_name, $action_link, $button_text ) . "</p>
+					<div class='notice notice-error cx-notice cx-shadow'>
+						<p class='pl-desc'>" . sprintf( __( 'In order to <strong>%1$s</strong> run properly, <strong>%2$s</strong> needs to be activated.<a href="%3$s" class="button button-primary">%4$s %2$s Now</a>', 'cx-plugin' ), $this->name, $plugin_name, $action_link, $button_text ) . "</p>
 					</div>
 				";
 			}
@@ -121,7 +121,7 @@ class Notice extends Base {
 				if( false == get_option( "_notice-{$this->slug}-{$notice->id}" ) ) :
 				$dismiss_url = add_query_arg( [ 'action' => 'cx-dismiss', 'plugin' => $this->slug, 'notice' => $notice->id ], $ajax_url );
 				echo "
-				<div id='notice-{$this->slug}-{$notice->id}' class='notice cx-notice cx-plugin-notice is-dismissible' data-id='{$notice->id}' data-dismiss-url='{$dismiss_url}'>
+				<div id='notice-{$this->slug}-{$notice->id}' class='notice cx-notice cx-shadow cx-plugin-notice is-dismissible' data-id='{$notice->id}' data-dismiss-url='{$dismiss_url}'>
 					<a href='{$notice->link}' target='_blank'><img src='{$notice->image}' /></a>
 				</div>";
 				endif;
