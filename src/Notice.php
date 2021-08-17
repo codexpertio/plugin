@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Notice extends Base {
 	
 	public $slug;
+	
 	public $name;
 
 	public function __construct( $plugin ) {
@@ -74,6 +75,9 @@ class Notice extends Base {
 	}
 
 	public function print() {
+
+		if( did_action( 'cx-notice' ) ) return; // don't print notices more than once
+		do_action( 'cx-notice' );
 
 		global $cx_notices;
 
