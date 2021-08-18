@@ -1,5 +1,5 @@
 <?php
-namespace codexpert\plugin;
+namespace Codexpert\Plugin;
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
