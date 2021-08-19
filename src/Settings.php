@@ -86,6 +86,9 @@ class Settings extends Fields {
 		unset( $_POST['_wp_http_referer'] );
 
 		update_option( $option_name, $_POST );
+		
+		do_action( 'cx-settings-saved', $option_name, $_POST );
+		
 		wp_send_json( apply_filters( 'cx-settings-response', array( 'status' => 1, 'message' => __( 'Settings Saved!' ), 'page_load' => $page_load ), $_POST ) );
 	}
 
