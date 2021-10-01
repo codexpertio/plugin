@@ -86,7 +86,7 @@ class Notice extends Base {
 				$is_dismissible = isset( $notice['dismissible'] ) && $notice['dismissible'] ? ' is-dismissible': '';
 				echo "
 					<div class='notice notice-{$notice['type']}{$is_dismissible} cx-notice cx-shadow'>
-						<p>" . $notice['text'] . "</p>
+						" . $notice['text'] . "
 					</div>
 				";
 			}
