@@ -45,11 +45,13 @@ class Notice extends Base {
 		global $cx_notices;
 
 		if( isset( $this->plugin['min_wp'] ) && version_compare( get_bloginfo( 'version' ), $this->plugin['min_wp'], '<' ) ) {
-			self::add( sprintf( __( '<strong>%s</strong> requires <i>WordPress version %s</i> or higher. You have <i>version %s</i> installed.', 'cx-plugin' ), $this->name, $this->plugin['min_wp'], get_bloginfo( 'version' ) ) );
+			$notice = '<p>' . sprintf( __( '<strong>%s</strong> requires <i>WordPress version %s</i> or higher. You have <i>version %s</i> installed.', 'codexpert' ), $this->name, $this->plugin['min_wp'], get_bloginfo( 'version' ) ) . '</p>';
+			self::add( $notice );
 		}
 
 		if( isset( $this->plugin['min_php'] ) && version_compare( PHP_VERSION, $this->plugin['min_php'], '<' ) ) {
-			self::add( sprintf( __( '<strong>%s</strong> requires <i>PHP version %s</i> or higher. You have <i>version %s</i> installed.', 'cx-plugin' ), $this->name, $this->plugin['min_php'], PHP_VERSION ) );
+			$notice = '<p>' . sprintf( __( '<strong>%s</strong> requires <i>PHP version %s</i> or higher. You have <i>version %s</i> installed.', 'codexpert' ), $this->name, $this->plugin['min_php'], PHP_VERSION ) . '</p>';
+			self::add( $notice );
 		}
 
 		/**
@@ -64,10 +66,12 @@ class Notice extends Base {
 			if( !in_array( $plugin, $active_plugins ) ) {
 
 				$action_links = $this->_action_links( $plugin );
-				$button_text = array_key_exists( $plugin, $installed_plugins ) ? __( 'Activate', 'cx-plugin' ) : __( 'Install', 'cx-plugin' );
+				$button_text = array_key_exists( $plugin, $installed_plugins ) ? __( 'Activate', 'codexpert' ) : __( 'Install', 'codexpert' );
 				$action_link = array_key_exists( $plugin, $installed_plugins ) ? $action_links['activate'] : $action_links['install'];
 			
-				Notice::add( sprintf( __( 'In order to <strong>%1$s</strong> run properly, <strong>%2$s</strong> needs to be activated.<a href="%3$s" class="button button-primary">%4$s %2$s Now</a>', 'cx-plugin' ), $this->name, $plugin_name, $action_link, $button_text ) );
+				$notice = '<p>' . sprintf( __( 'In order to <strong>%1$s</strong> run properly, <strong>%2$s</strong> needs to be activated.', 'codexpert' ), $this->name, $plugin_name ) . '</p>';
+				$notice .= "<p><a href='{$action_link}' class='button button-primary'>" . sprintf( __( '%1$s %2$s Now' ), $button_text, $this->name ) . "</a></p>";
+				self::add( $notice );
 			}
 		}
 		endif;
