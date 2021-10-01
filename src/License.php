@@ -127,8 +127,8 @@ class License {
 		if( ! $this->_is_activated() ) {
 
 			$notice = '<h3>' . sprintf( __( 'Notice: Please activate your license for <strong>%s</strong>', 'codexpert' ), $this->name ) . '</h3>';
-			$notice .= '<p>' . __( 'The plugin won\'t work without activation! 😢', 'codexpert' ) . '</p>';
-			$notice .= '<p><a href="' . $this->get_activation_url() . '" class="button button-primary">' . __( 'Activate Now', 'codexpert' ) . '</a></p>';
+			$notice .= '<p>' . sprintf( __( 'In order to enjoy the features of <strong>%s</strong>, you need to activate the license first. The plugin won\'t work without activation! 😢', 'codexpert' ), $this->name ) . '</p>';
+			$notice .= '<p><a href="' . $this->get_activation_url() . '" class="button button-primary">' . __( 'Activate License', 'codexpert' ) . '</a></p>';
 
 			Notice::add( $notice );
 		}
@@ -150,7 +150,7 @@ class License {
 			$notice .= '<p>' . sprintf( __( 'It looks like <strong>%1$s</strong> cannot connect to our server and is unable to receive updates! 😢', 'codexpert' ), $this->name ) . '</p>';
 			$notice .= '<p><a href="' . $this->get_deactivation_url() . '" class="button button-primary">' . __( 'Reconnect Now', 'codexpert' ) . '</a></p>';
 
-			Notice::add( $notice );
+			Notice::add( $notice, 'warning' );
 		}
 	}
 
