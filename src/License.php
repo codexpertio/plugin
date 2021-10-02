@@ -137,7 +137,7 @@ class License {
 		elseif( ( time() + apply_filters( 'codexpert-expiry-notice-time', MONTH_IN_SECONDS, $this ) ) > ( $expiry = get_option( $this->get_license_expiry_name() ) ) ) {
 
 			$notice = '<h3>' . sprintf( __( 'Attention: %s is expiring..', 'codexpert' ), $this->name ) . '</h3>';
-			$notice .= '<p>' . sprintf( __( 'Your license for <strong>%1$s</strong> is about to expire in <strong>%2$s</strong>. The plugin will stop working without a valid license key. Renew your license now and get a special <strong>%3$s</strong> discount. Offer ends soon!', 'codexpert' ), $this->name, human_time_diff( $expiry, time() ), '25%' ) . '</p>';
+			$notice .= '<p>' . sprintf( __( 'Your license for <strong>%1$s</strong> is about to expire in <strong>%2$s</strong>. The plugin will stop working without a valid license key. Renew your license now and get a special <strong>%3$s discount</strong>. Offer ends soon!', 'codexpert' ), $this->name, human_time_diff( $expiry, time() ), '25%' ) . '</p>';
 			$notice .= '<p><a href="' . $this->get_renewal_url()  . '" class="button button-primary" target="_blank">' . __( 'Renew it now', 'codexpert' ) . '</a></p>';
 
 			Notice::add( $notice, 'error', true );
