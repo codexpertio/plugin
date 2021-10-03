@@ -70,7 +70,7 @@ class Notice extends Base {
 				$action_link = array_key_exists( $plugin, $installed_plugins ) ? $action_links['activate'] : $action_links['install'];
 			
 				$notice = '<p>' . sprintf( __( 'In order to <strong>%1$s</strong> run properly, <strong>%2$s</strong> needs to be activated.', 'codexpert' ), $this->name, $plugin_name ) . '</p>';
-				$notice .= "<p><a href='{$action_link}' class='button button-primary'>" . sprintf( __( '%1$s %2$s Now' ), $button_text, $this->name ) . "</a></p>";
+				$notice .= "<p><a href='{$action_link}' class='button button-primary'>" . sprintf( __( '%1$s %2$s Now' ), $button_text, $plugin_name ) . "</a></p>";
 				self::add( $notice );
 			}
 		}
