@@ -134,7 +134,7 @@ class License {
 		}
 
 		// about to expire?
-		elseif( ( time() + apply_filters( 'codexpert-expiry-notice-time', MONTH_IN_SECONDS, $this ) ) > ( $expiry = get_option( $this->get_license_expiry_name() ) ) ) {
+		if( $this->_is_activated() && ( time() + apply_filters( 'codexpert-expiry-notice-time', MONTH_IN_SECONDS, $this ) ) > ( $expiry = get_option( $this->get_license_expiry_name() ) ) && time() < $expiry ) {
 
 			$notice = '<h3>' . sprintf( __( 'Attention: %s is expiring..', 'codexpert' ), $this->name ) . '</h3>';
 			$notice .= '<p>' . sprintf( __( 'Your license for <strong>%1$s</strong> is about to expire in <strong>%2$s</strong>. The plugin will stop working without a valid license key. Renew your license now and get a special <strong>%3$s discount</strong>. Offer ends soon!', 'codexpert' ), $this->name, human_time_diff( $expiry, time() ), '25%' ) . '</p>';
@@ -144,7 +144,7 @@ class License {
 		}
 
 		// expired to invalid license?
-		elseif( $this->_is_activated() && ( $this->_is_invalid() || $this->_is_expired() ) && apply_filters( 'codexpert-show_validation_notice', true, $this->plugin ) ) {
+		if( $this->_is_activated() && ( $this->_is_invalid() || $this->_is_expired() ) && apply_filters( 'codexpert-show_validation_notice', true, $this->plugin ) ) {
 
 			$notice = '<h3>' . sprintf( __( 'Warning: %s cannot connect to the server!', 'codexpert' ), $this->name ) . '</h3>';
 			$notice .= '<p>' . sprintf( __( 'It looks like <strong>%1$s</strong> can\'t connect to our server and is unable to receive updates! The plugin might stop working if it\'s not connected.', 'codexpert' ), $this->name ) . '</p>';
