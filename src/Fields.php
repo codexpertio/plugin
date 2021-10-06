@@ -124,7 +124,7 @@ abstract class Fields extends Base {
 
 			echo "<div id='{$section['id']}' class='cx-section' style='display:none'>";
 
-			if( ! isset( $section['no_heading'] ) || $section['no_heading'] == true ) {
+			if( ! isset( $section['no_heading'] ) || $section['no_heading'] !== true ) {
 				echo "<div class='cx-subheading'>";
 				
 				do_action( 'cx-settings-before-title', $section );
