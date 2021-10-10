@@ -112,10 +112,6 @@ class Survey extends Base {
 		wp_remote_get( $endpoint );
 		
 		endif;
-		
-		if( get_option( "{$this->slug}_installed" ) == '' ) :
-			update_option( "{$this->slug}_installed", time() );
-		endif;
 	}
 
 	/**
@@ -149,7 +145,7 @@ class Survey extends Base {
      *
      */
     public function admin_notices() {
-        if( get_option( "{$this->slug}_survey" ) != 1 && ( get_option( "{$this->slug}_installed" ) < time() - $this->get_delay() ) ) :
+        if( get_option( "{$this->slug}_survey" ) != 1 && ( get_option( "{$this->slug}_install_time" ) < time() - $this->get_delay() ) ) :
         ?>
         <div id="<?php echo $this->slug; ?>-survey-notice" class="notice notice-success is-dismissible cx-survey cx-notice cx-shadow" data-slug="<?php echo $this->slug; ?>">
 
