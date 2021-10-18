@@ -78,7 +78,7 @@ class Widget extends Base {
 	 * @since 1.0
 	 */
 	public function dashboard_widget() {
-		wp_add_dashboard_widget( 'cx-overview', __( 'Latest From Our Blog', 'cx-plugin' ), [ $this, 'callback_dashboard_widget' ] );
+		wp_add_dashboard_widget( 'cx-overview', __( 'WordPress Related Blogs & Tutorials', 'cx-plugin' ), [ $this, 'callback_dashboard_widget' ] );
 
 		// Move our widget to top.
 		global $wp_meta_boxes;
