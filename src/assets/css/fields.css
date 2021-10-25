@@ -10,6 +10,7 @@
     position: relative;
     width: 100%;
     display: inline-block;
+    margin-bottom: 60px;
 }
 .cx-navs-wrapper {
     width: 12%;
