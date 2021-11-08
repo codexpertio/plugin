@@ -157,9 +157,26 @@ class License {
 		else {
 			$deactivation_url	= $this->get_deactivation_url();
 			$deactivate_label	= apply_filters( "{$this->slug}_deactivate_label", __( 'Deactivate', 'codexpert' ), $this->plugin );
+			$license_meta		= get_option( $this->get_license_meta_name() );
 			
-			$html .= '<p class="cx-desc">' . __( 'Congratulations! 🎉', 'codexpert' ) . '</p>';
-			$html .= '<p class="cx-desc">' . sprintf( __( 'The license for <strong>%s</strong> is activated. You can deactivate the license by clicking the button below.', 'codexpert' ), $this->name ) . '</p>';
+			$html .= '<p class="cx-desc">' . sprintf( __( 'Congratulations! Your license for <strong>%s</strong> is activated. 🎉', 'codexpert' ), $this->name ) . '</p>';
+			
+			
+			if( isset( $license_meta->customer_name ) ) {
+				$html .= '<p class="cx-info">' . sprintf( __( 'Name: %s', 'codexpert' ), $license_meta->customer_name ) . '</p>';
+			}
+
+			if( isset( $license_meta->customer_email ) ) {
+				$html .= '<p class="cx-info">' . sprintf( __( 'Email: %s', 'codexpert' ), $license_meta->customer_email ) . '</p>';
+			}
+
+			if( isset( $license_meta->payment_id ) ) {
+				$html .= '<p class="cx-info">' . sprintf( __( 'Order ID: %s', 'codexpert' ), $license_meta->payment_id ) . '</p>';
+			}
+
+			$html .= '<p class="cx-info">' . sprintf( __( 'Expiry: %s', 'codexpert' ), $this->get_license_expiry() ) . '</p>';
+
+			$html .= '<p class="cx-info">' . __( 'You can deactivate the license by clicking the button below.', 'codexpert' ) . '</p>';
 			$html .= "<a id='cx-deactivate' class='cx-button button button-secondary' href='{$deactivation_url}'>" . $deactivate_label . "</a>";
 		}
 
@@ -274,6 +291,7 @@ class License {
 				update_option( $this->get_license_key_name(), $license );
 				update_option( $this->get_license_status_name(), $license_data->license );
 				update_option( $this->get_license_expiry_name(), ( $license_data->expires == 'lifetime' ? 4765132799 : strtotime( $license_data->expires ) ) );
+				update_option( $this->get_license_meta_name(), $license_data );
 
 				$_response['status']	= $license_data;
 				$_response['message']	= __( 'License activated', 'codexpert' );
@@ -287,6 +305,7 @@ class License {
 				delete_option( $this->get_license_key_name() );
 				delete_option( $this->get_license_status_name() );
 				delete_option( $this->get_license_expiry_name() );
+				delete_option( $this->get_license_meta_name() );
 
 				$_response['status']	= true;
 				$_response['message'] = __( 'License deactivated', 'codexpert' );
@@ -299,6 +318,7 @@ class License {
 				$_response['status']	= true;
 				$_response['message']	= __( 'License valid', 'codexpert' );
 				$_response['data']		= $license_data;
+				update_option( $this->get_license_meta_name(), $license_data );
 			} else {
 				$_response['status']	= false;
 				$_response['message']	= __( 'License invalid', 'codexpert' );
@@ -361,12 +381,25 @@ class License {
 		return "_license_{$this->slug}_expiry";
 	}
 
+	// option_key in the wp_options table
+	public function get_license_meta_name() {
+		return "_license_{$this->slug}_meta";
+	}
+
 	public function get_license_key() {
 		return get_option( $this->get_license_key_name() );
 	}
 
 	public function get_license_status() {
 		return get_option( $this->get_license_status_name() );
+	}
+
+	public function get_license_expiry() {
+		$expiry = get_option( $this->get_license_expiry_name() );
+		
+		if( $expiry == 4765132799 ) return 'lifetime';
+
+		return date_i18n( get_option( 'date_format' ), $expiry );
 	}
 
 	public function _is_activated() {
