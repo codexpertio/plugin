@@ -166,7 +166,7 @@ class Table extends \WP_List_Table {
     public function column_cb( $item ) {
         if( !isset( $this->config['bulk_actions'] ) || count( $this->config['bulk_actions'] ) <= 0 ) return;
 
-        return sprintf( '<input type="checkbox" name="%s[]" value="%s" />', 'ids', $item['id']  );
+        return sprintf( '<input type="checkbox" name="%s[]" value="%s" />', 'ids', isset( $item['id'] ) ? $item['id'] : $item[ $this->config['orderby'] ] );
     }
 
     public function get_bulk_actions() {
