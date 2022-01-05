@@ -40,23 +40,30 @@ jQuery(function ($) {
         if (typeof tinyMCE != "undefined") tinyMCE.triggerSave();
         var $form = $(this);
         var $submit = $(".cx-submit", $form);
+        var $overlay = $('#cx-overlay');
         $submit.attr("disabled", !0);
         $(".cx-message", $form).hide();
+        $overlay.show();
         $.ajax({
             url: ajaxurl,
             data: $form.serialize(),
             type: "POST",
             dataType: "JSON",
             success: function (ret) {
-                if (ret.status == 1 || ret.status == 0) $(".cx-message", $form).text(ret.message).show().fadeOut(3000);
+                if (ret.status == 1 || ret.status == 0) {
+                    $(".cx-message p", $form).text(ret.message);
+                    $(".cx-message", $form).show().fadeOut(3000);
+                }
                 $submit.attr("disabled", !1);
                 if (ret.page_load == 1)
                     setTimeout(function () {
                         window.location.href = "";
                     }, 1000);
+                $overlay.hide();
             },
             erorr: function (ret) {
                 $submit.attr("disabled", !1);
+                $overlay.hide();
             },
         });
     });
@@ -66,21 +73,23 @@ jQuery(function ($) {
         var $_nonce = $this.data("_nonce");
         $this.attr("disabled", !0);
         $("#cx-message-" + $option_name).hide();
+        var $overlay = $('#cx-overlay');
+        $overlay.show();
         $.ajax({
             url: ajaxurl,
             data: { action: "cx-reset", option_name: $option_name, _wpnonce: $_nonce },
             type: "POST",
             dataType: "JSON",
             success: function (ret) {
-                $("#cx-message-" + $option_name)
-                    .text(ret.message)
-                    .show();
+                $("#cx-message-" + $option_name + ' p').text(ret.message);
+                $("#cx-message-" + $option_name).show();
                 setTimeout(function () {
                     window.location.href = "";
                 }, 1000);
             },
             erorr: function (ret) {
                 $this.attr("disabled", !1);
+                $overlay.hide();
             },
         });
     });

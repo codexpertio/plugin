@@ -153,7 +153,10 @@ abstract class Fields extends Base {
 			$page_load = isset( $section['page_load'] ) && $section['page_load'] ? 1 : 0;
 
 			echo "<form id='cx-form-{$section['id']}' class='cx-form'>
-					<div id='cx-message-{$section['id']}' class='cx-message'></div>
+					<div id='cx-message-{$section['id']}' class='cx-message'>
+						<img src='" . plugins_url( 'assets/img/checked.png', __FILE__ ) . "' />
+						<p></p>
+					</div>
 					<input type='hidden' name='action' value='cx-settings' />
 					<input type='hidden' name='option_name' value='{$section['id']}' />
 					<input type='hidden' name='page_load' value='{$page_load}' />
@@ -196,7 +199,11 @@ abstract class Fields extends Base {
 
 		echo '</div><!--div class="cx-sidebar-wrapper"-->
 			</div><!--div class="cx-wrapper"-->
-		</div><!--div class="wrap"-->';
+		</div><!--div class="wrap"-->
+		<div id="cx-overlay" style="display: none;">
+			<img src="' . plugins_url( 'assets/img/loading.gif', __FILE__ ) . '" />
+		</div>
+		';
 
 		if( isset( $config['css'] ) && $config['css'] != '' ) {
 			echo "<style>{$config['css']}</style>";
