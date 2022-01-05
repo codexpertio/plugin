@@ -83,6 +83,7 @@ jQuery(function ($) {
             success: function (ret) {
                 $("#cx-message-" + $option_name + ' p').text(ret.message);
                 $("#cx-message-" + $option_name).show();
+                $overlay.hide();
                 setTimeout(function () {
                     window.location.href = "";
                 }, 1000);
