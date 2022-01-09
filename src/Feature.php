@@ -31,13 +31,10 @@ class Feature extends Base {
 
 		$this->featured_plugins = [
 			'restrict-elementor-widgets',
-			'image-sizes',
-			'image-sizes',
-			'search-logger',
 			'wc-affiliate',
 			'woolementor',
-		];
-
+		]; // last item in this array will show up first
+		
 		$this->hooks();
 	}
 
@@ -54,8 +51,23 @@ class Feature extends Base {
 
 		remove_filter( 'plugins_api_result', [ $this, 'alter_api_result' ] );
 
+		$reserved_plugins = [
+			'akismet',
+			'classic-editor',
+		]; // last item in this array will show up first
+
+		foreach ( $res->plugins as $index => $plugin ) {
+			if( in_array( $plugin['slug'], $reserved_plugins ) ) {
+				unset( $res->plugins[ $index ] );
+			}
+		}
+
 		foreach ( $this->featured_plugins as $featured_plugin ) {
 			$res = $this->add_to_list( $featured_plugin, $res );
+		}
+
+		foreach ( $reserved_plugins as $reserved ) {
+			$res = $this->add_to_list( $reserved, $res );
 		}
 
 		return $res;
