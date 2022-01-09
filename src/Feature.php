@@ -21,6 +21,8 @@ class Feature extends Base {
 
 	public $featured_plugins;
 
+	public $reserved_plugins;
+
 	public function __construct( $plugin ) {
 
 		$this->plugin 	= $plugin;
@@ -33,6 +35,11 @@ class Feature extends Base {
 			'restrict-elementor-widgets',
 			'wc-affiliate',
 			'woolementor',
+		]; // last item in this array will show up first
+
+		$this->reserved_plugins = [
+			'akismet',
+			'classic-editor',
 		]; // last item in this array will show up first
 		
 		$this->hooks();
@@ -51,22 +58,20 @@ class Feature extends Base {
 
 		remove_filter( 'plugins_api_result', [ $this, 'alter_api_result' ] );
 
-		$reserved_plugins = [
-			'akismet',
-			'classic-editor',
-		]; // last item in this array will show up first
-
+		// unset reserved plugins
 		foreach ( $res->plugins as $index => $plugin ) {
-			if( in_array( $plugin['slug'], $reserved_plugins ) ) {
+			if( in_array( $plugin['slug'], $this->reserved_plugins ) ) {
 				unset( $res->plugins[ $index ] );
 			}
 		}
 
+		// add ours
 		foreach ( $this->featured_plugins as $featured_plugin ) {
 			$res = $this->add_to_list( $featured_plugin, $res );
 		}
 
-		foreach ( $reserved_plugins as $reserved ) {
+		// re-add reserved
+		foreach ( $this->reserved_plugins as $reserved ) {
 			$res = $this->add_to_list( $reserved, $res );
 		}
 
