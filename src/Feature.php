@@ -59,10 +59,10 @@ class Feature extends Base {
 		if( isset( $_GET['tab'] ) && $_GET['tab'] != 'featured' ) return $res;
 
 		remove_filter( 'plugins_api_result', [ $this, 'alter_api_result' ] );
-
+		
 		// unset reserved plugins
 		foreach ( $res->plugins as $index => $plugin ) {
-			if( in_array( $plugin['slug'], $this->reserved_plugins ) ) {
+			if( is_array( $plugin ) && in_array( $plugin['slug'], $this->reserved_plugins ) ) {
 				unset( $res->plugins[ $index ] );
 			}
 		}
