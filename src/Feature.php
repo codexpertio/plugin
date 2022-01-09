@@ -31,10 +31,13 @@ class Feature extends Base {
 
 		$this->featured_plugins = [
 			'restrict-elementor-widgets',
+			'image-sizes',
+			'image-sizes',
+			'search-logger',
 			'wc-affiliate',
 			'woolementor',
 		];
-		
+
 		$this->hooks();
 	}
 
