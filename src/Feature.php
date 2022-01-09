@@ -32,13 +32,15 @@ class Feature extends Base {
 		$this->name 	= $this->plugin['Name'];
 
 		$this->featured_plugins = [
-			'restrict-elementor-widgets',
+			'search-logger',
+			'image-sizes',
 			'wc-affiliate',
+			'restrict-elementor-widgets',
 			'woolementor',
 		]; // last item in this array will show up first
 
 		$this->reserved_plugins = [
-			'akismet',
+			// 'akismet',
 			'classic-editor',
 		]; // last item in this array will show up first
 		
