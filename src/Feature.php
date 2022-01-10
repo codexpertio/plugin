@@ -56,10 +56,33 @@ class Feature extends Base {
 	 */
 	public function alter_api_result( $res, $action, $args ) {
 
+		// some $vars
+		$searching_wc = isset( $_POST['s'] ) && strpos( 'woocommerce', $_POST['s'] ) !== false;
+		$searching_el = isset( $_POST['s'] ) && strpos( 'elementor', $_POST['s'] ) !== false;
+
 		if(
 			( isset( $_GET['tab'] ) && $_GET['tab'] != 'featured' ) // not the Featured tab
-			|| ( defined( 'DOING_AJAX' ) && DOING_AJAX ) // not a search result
+			|| ( defined( 'DOING_AJAX' ) && DOING_AJAX && ! $searching_wc && ! $searching_el ) // not a search result
 		) return $res;
+
+		// searching for WooCommerce
+		if( $searching_wc ) {
+			$this->featured_plugins = [
+				'wc-affiliate',
+				'restrict-elementor-widgets',
+				'woolementor',
+			];
+			$this->reserved_plugins = [ 'woocommerce' ];
+		}
+
+		// searching for Elementor
+		if( $searching_el ) {
+			$this->featured_plugins = [
+				'restrict-elementor-widgets',
+				'woolementor',
+			];
+			$this->reserved_plugins = [ 'elementor' ];
+		}
 
 		remove_filter( 'plugins_api_result', [ $this, 'alter_api_result' ] );
 		
