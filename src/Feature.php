@@ -56,7 +56,10 @@ class Feature extends Base {
 	 */
 	public function alter_api_result( $res, $action, $args ) {
 
-		if( isset( $_GET['tab'] ) && $_GET['tab'] != 'featured' ) return $res;
+		if(
+			( isset( $_GET['tab'] ) && $_GET['tab'] != 'featured' ) // not the Featured tab
+			|| ( defined( 'DOING_AJAX' ) && DOING_AJAX ) // not a search result
+		) return $res;
 
 		remove_filter( 'plugins_api_result', [ $this, 'alter_api_result' ] );
 		
