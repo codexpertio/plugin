@@ -64,10 +64,10 @@
     border-left: none;
 }
 .cx-subheading {
-	border-bottom: 1px solid #ddd;
-	padding-bottom: 18px;
-	padding-top: 18px;
-	margin-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 18px;
+    padding-top: 18px;
+    margin-bottom: 15px;
 }
 .cx-subheading-text {
     font-size: 1.3rem;
@@ -77,8 +77,8 @@
     text-align: left;
     padding: 20px 10px 20px 0;
     width: 25%;
-	font-weight: 400;
-	font-size: 15px;
+    font-weight: 400;
+    font-size: 15px;
 }
 .cx-field-wrap {
     padding: 15px 10px;
@@ -89,11 +89,11 @@
     width: 100% !important;
 }
 .cx-desc {
-	color: #666;
-	font-style: italic;
+    color: #666;
+    font-style: italic;
 }
 .cx-row {
-	border-bottom: 1px solid #f5f5f5;
+    border-bottom: 1px solid #f5f5f5;
 }
 .cx-row:last-child {
     border-bottom: 0px solid #fff;
@@ -138,13 +138,13 @@
 .cx-nav-tab.cx-active-tab a {
     color: #fff;
 }
-.cx-field-wrap .cx-field-email,
-.cx-field-wrap .cx-field-number,
-.cx-field-wrap .cx-field-password,
-.cx-field-wrap .cx-field-select,
-.cx-field-wrap .cx-field-text,
-.cx-field-wrap .cx-field-textarea,
-.cx-field-wrap .cx-field-url {
+.cx-field-wrap .cx-field-email:not(.cx-field-group),
+.cx-field-wrap .cx-field-number:not(.cx-field-group),
+.cx-field-wrap .cx-field-password:not(.cx-field-group),
+.cx-field-wrap .cx-field-select:not(.cx-field-group),
+.cx-field-wrap .cx-field-text:not(.cx-field-group),
+.cx-field-wrap .cx-field-textarea:not(.cx-field-group),
+.cx-field-wrap .cx-field-url:not(.cx-field-group) {
     width: 100%;
     min-width: 100%;
 }
