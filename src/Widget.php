@@ -34,7 +34,6 @@ class Widget extends Base {
 
 	public function hooks() {
 		$this->activate( 'install' );
-		$this->action( 'codexpert-daily', 'daily' );
 		$this->action( 'wp_dashboard_setup', 'dashboard_widget', 99 );
 	}
 
@@ -44,29 +43,19 @@ class Widget extends Base {
 	 * @since 1.0
 	 */
 	public function install() {
-		/**
-		 * Schedule an event to sync help docs
-		 */
-		if ( !wp_next_scheduled ( 'codexpert-daily' )) {
-		    wp_schedule_event( time(), 'daily', 'codexpert-daily' );
-		}
-
 		if( get_option( 'codexpert-blog-json' ) == '' ) {
-			$this->daily();
+			$this->pull_blogs();
 		}
 	}
 
 	/**
-	 * Daily events
+	 * Sync blog posts from https://codexpert.io
+	 *
+	 * @since 1.0
 	 */
-	public function daily() {
-		/**
-		 * Sync blog posts from https://codexpert.io
-		 *
-		 * @since 1.0
-		 */
+	public function pull_blogs() {
 	    $_posts = 'https://codexpert.io/wp-json/wp/v2/posts/';
-	    if( !is_wp_error( $_posts_data = wp_remote_get( $_posts ) ) ) {
+	    if( ! is_wp_error( $_posts_data = wp_remote_get( $_posts ) ) ) {
 	        update_option( 'codexpert-blog-json', json_decode( $_posts_data['body'], true ) );
 	    }
 	}
