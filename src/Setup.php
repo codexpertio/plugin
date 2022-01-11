@@ -23,6 +23,7 @@ class Setup extends Base {
 		$this->name 	= $this->plugin['Name'];
 		$this->steps 	= $this->plugin['steps'];
 		$this->admin_url = admin_url( 'admin.php' );
+		$this->top_heading 	= isset( $this->plugin['hide_top_heading'] ) ? $this->plugin['hide_top_heading'] : false;
 
 		$this->action( 'admin_menu', 'add_pseudo_menu' );
 		$this->action( 'admin_init', 'render_content' );
@@ -35,7 +36,7 @@ class Setup extends Base {
 		    return;
 		}
 
-		wp_enqueue_style( 'googleapis', 'https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400&display=swap' );
+		wp_enqueue_style( 'googleapis', 'https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap' );
         wp_enqueue_style( 'codexpert-product-wizard', plugins_url( 'assets/css/wizard.css', __FILE__ ), [], '' );
     }
 
@@ -59,6 +60,7 @@ class Setup extends Base {
 	}
 
 	public function header() {
+		$hide_title = $this->top_heading ? 'hide_title' : '';
 		?>
 		<!DOCTYPE html>
 		<html xmlns="http://www.w3.org/1999/xhtml" <?php language_attributes(); ?>>
@@ -72,13 +74,13 @@ class Setup extends Base {
 			</head>
 			<body class="cx-setup wp-core-ui cx-wizard-body-panel">
 			<div class="cx-wizard-container">
-			<h1><a href="<?php echo $this->get_step_url( array_keys( $this->steps )[0] ); ?>"><?php echo $this->name; ?></a></h1>
+			<h1 class="cx-wizard-heading <?php echo $hide_title ?>"><a href="<?php echo $this->get_step_url( array_keys( $this->steps )[0] ); ?>"><?php echo $this->name; ?></a></h1>
 		<?php
 	}
 
 	public function pagination() {
-
-		echo '<div class="cx-wizard-progress-bar">';
+		
+		echo '<div class="cx-wizard-stepper-wrapper">';
 
 		$count = 1;
 		$passed = 'passed-step';
@@ -99,16 +101,12 @@ class Setup extends Base {
 			$classes = implode( ' ', $_classes );
 			$url = $this->get_step_url( $step );
 
-			echo "<div class='step cx-step-{$count} {$classes} {$passed}'>
-					<p><a href='{$url}'>{$data['label']}</a></p>
-					<a href='{$url}'>
-						<div class='bullet'>
-							<span>{$count}</span>
-						</div>
-					</a>
-					<div class='check fas fa-check'>
-					</div>
-				</div>";
+			echo "
+			  <div class='cx-wizard-stepper-item cx-step-{$count} {$classes} {$passed}'>
+			    <div class='cx-wizard-step-counter'>{$count}</div>
+			    <div class='cx-wizard-step-name'><a href='{$url}'>{$data['label']}</a></div>
+			  </div>
+			";
 
 			$count++;
 
@@ -123,7 +121,7 @@ class Setup extends Base {
 			<?php 
 			$current_step 	= $this->current_step();
 			$action 		= add_query_arg( 'saved', 1, $this->get_step_url( $current_step ) );
-			echo "<form method='POST' action='{$action}'>";
+			echo "<form id='cx-{$current_step}-form' method='POST' action='{$action}'>";
 			?>
 		<div class="cx-wizard-page">
 		<?php
@@ -151,7 +149,7 @@ class Setup extends Base {
 
 	public function footer() {
 		?>
-								<div class="field btns">
+								<div class="cx-wizard-btns">
 									<?php 
 									$prev_step 		= $this->previous_step();
 									$current_step 	= $this->current_step();
@@ -161,7 +159,7 @@ class Setup extends Base {
 									$previous_text 	= __( 'Previous', 'cx-plugin' );
 									$button_text	= $current_step == $next_step ? __( 'Finish', 'cx-plugin' ) : __( 'Next', 'cx-plugin' );
 									echo "<a class='cx-wizard-btn prev {$disabled}' href='{$prev_step_url}'>{$previous_text}</a>";
-									echo "<button class='cx-wizard-btn next'>{$button_text}</button>";
+									echo "<button id='{$current_step}-btn' class='cx-wizard-btn next'>{$button_text}</button>";
 									?>
 								</div>
 							</div>
