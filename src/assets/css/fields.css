@@ -9,11 +9,11 @@
     padding: 0 0 20px 0;
     position: relative;
     width: 100%;
-    display: inline-block;
+    display: grid;
     margin-bottom: 60px;
+    grid-template-columns: 2fr 8fr;
 }
 .cx-navs-wrapper {
-    width: 12%;
     z-index: 2;
     position: relative;
     float: left;
@@ -58,7 +58,6 @@
 .cx-sections-wrapper {
     position: relative;
     padding: 5px 16px;
-    width: 80%;
     float: left;
     background: #fff;
     color: #444;
@@ -341,9 +340,11 @@ select.cx-field-select:disabled {
     left: calc(50% - 100px);
     top: 200px;
 }
-@media only screen and (min-width: 320px) {
+@media only screen and (max-width: 767px) {
+    .cx-wrapper {
+        grid-template-columns: inherit;
+    }
     .cx-sections-wrapper {
-        width: 73.5%;
         margin-left: 0;
     }
     .cx-label-wrap {
@@ -364,6 +365,12 @@ select.cx-field-select:disabled {
         font-size: 15px;
         padding-left: 5px !important;
     }
+    .cx-navs-wrapper ul {
+        text-align: center;
+    }
+    .cx-navs-wrapper ul li {
+        display: inline-block;
+    }
     .cx-navs-wrapper ul li a {
         text-align: center;
         padding: 10px;
@@ -381,7 +388,6 @@ select.cx-field-select:disabled {
 }
 @media only screen and (min-width: 768px) {
     .cx-sections-wrapper {
-        width: 75%;
         margin-left: 20px;
     }
     .cx-label-wrap {
@@ -400,7 +406,6 @@ select.cx-field-select:disabled {
         font-size: 15px;
     }
     .cx-navs-wrapper {
-        width: 10%;
     }
     .cx-field-wrap input.button.cx-browse {
         padding: 0 10px;
@@ -417,7 +422,6 @@ select.cx-field-select:disabled {
 }
 @media only screen and (min-width: 1200px) {
     .cx-sections-wrapper {
-        width: 80%;
     }
     .cx-label-wrap {
         width: 15%;
@@ -435,7 +439,6 @@ select.cx-field-select:disabled {
         font-size: 15px;
     }
     .cx-navs-wrapper {
-        width: 15%;
     }
     .cx-navs-wrapper ul li a {
         text-align: left;
@@ -453,7 +456,6 @@ select.cx-field-select:disabled {
 }
 @media only screen and (min-width: 1367px) {
     .cx-navs-wrapper {
-        width: 13%;
     }
     .cx-field-wrap input.button.cx-browse {
         padding: 0 40px;

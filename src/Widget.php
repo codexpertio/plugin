@@ -10,126 +10,220 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * @package Plugin
- * @subpackage Widget
+ * @subpackage Setup
  * @author Codexpert <hi@codexpert.io>
  */
-class Widget extends Base {
+class Setup extends Base {
 
-	public $slug;
-	
-	public $name;
-	
-	public $server;
-	
-	public static $_instance;
-	
 	public function __construct( $plugin ) {
+
 		$this->plugin 	= $plugin;
 		$this->server 	= $this->plugin['server'];
 		$this->slug 	= $this->plugin['TextDomain'];
 		$this->name 	= $this->plugin['Name'];
-		
-		$this->hooks();
+		$this->steps 	= $this->plugin['steps'];
+		$this->admin_url = admin_url( 'admin.php' );
+		$this->top_heading 	= isset( $this->plugin['hide_top_heading'] ) ? $this->plugin['hide_top_heading'] : false;
+
+		$this->action( 'admin_menu', 'add_pseudo_menu' );
+		$this->action( 'admin_init', 'render_content' );
+		$this->action( 'admin_head', 'save_setup' );
+		$this->action( 'admin_print_styles', 'enqueue_scripts' );
 	}
 
-	public function hooks() {
-		$this->activate( 'install' );
-		$this->action( 'wp_dashboard_setup', 'dashboard_widget', 99 );
-	}
-
-	/**
-	 * Installer. Runs once when the plugin in activated.
-	 *
-	 * @since 1.0
-	 */
-	public function install() {
-		if( get_option( 'codexpert-blog-json' ) == '' ) {
-			$this->pull_blogs();
+	public function enqueue_scripts() {
+		if ( !isset( $_GET['page'] ) || "{$this->slug}_setup" !== $_GET['page'] ) {
+		    return;
 		}
-	}
+
+		wp_enqueue_style( 'googleapis', 'https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap' );
+        wp_enqueue_style( 'codexpert-product-wizard', plugins_url( 'assets/css/wizard.css', __FILE__ ), [], '' );
+    }
 
 	/**
-	 * Sync blog posts from https://codexpert.io
-	 *
-	 * @since 1.0
+	 * Add admin menus/screens.
 	 */
-	public function pull_blogs() {
-	    $_posts = 'https://codexpert.io/wp-json/wp/v2/posts/';
-	    if( ! is_wp_error( $_posts_data = wp_remote_get( $_posts ) ) ) {
-	        update_option( 'codexpert-blog-json', json_decode( $_posts_data['body'], true ) );
-	    }
+	public function add_pseudo_menu() {
+		add_dashboard_page( '', '', 'manage_options', "{$this->slug}_setup", '' );
 	}
 
+	public function render_content() {
+		if ( !isset( $_GET['page'] ) || "{$this->slug}_setup" !== $_GET['page'] ) {
+		    return;
+		}
 
-	/**
-	 * Adds a widget in /wp-admin/index.php page
-	 *
-	 * @since 1.0
-	 */
-	public function dashboard_widget() {
-		wp_add_dashboard_widget( 'cx-overview', __( 'WordPress Related Blogs & Tutorials', 'cx-plugin' ), [ $this, 'callback_dashboard_widget' ] );
-
-		// Move our widget to top.
-		global $wp_meta_boxes;
-
-		$dashboard = $wp_meta_boxes['dashboard']['normal']['core'];
-		$ours = [
-			'cx-overview' => $dashboard['cx-overview'],
-		];
-
-		$wp_meta_boxes['dashboard']['normal']['core'] = array_merge( $ours, $dashboard );
+		$this->header();
+		$this->pagination();
+		$this->body();
+		$this->footer();
+		exit;
 	}
 
-	/**
-	 * Call back for dashboard widget in /wp-admin/
-	 *
-	 * @see dashboard_widget()
-	 *
-	 * @since 1.0
-	 */
-	public function callback_dashboard_widget() {
-		$posts = get_option( 'codexpert-blog-json', [] );
-		$utm = [ 'utm_source' => 'dashboard', 'utm_medium' => 'metabox', 'utm_campaign' => 'blog-post' ];
-		
-		if( is_array( $posts ) && count( $posts ) > 0 ) :
-		
-		$posts = array_slice( $posts, 0, 5 );
+	public function header() {
+		$hide_title = $this->top_heading ? 'hide_title' : '';
+		?>
+		<!DOCTYPE html>
+		<html xmlns="http://www.w3.org/1999/xhtml" <?php language_attributes(); ?>>
+			<head>
+				<meta name="viewport" content="width=device-width" />
+				<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+				<title><?php printf( __( '%s &rsaquo; Setup Wizard' ), $this->name ); ?></title>
+				<?php do_action( 'admin_print_styles' ); ?>
+				<?php do_action( 'admin_head' ); ?>
+				<?php do_action( 'admin_print_scripts' ); ?>
+			</head>
+			<body class="cx-setup wp-core-ui cx-wizard-body-panel">
+			<div class="cx-wizard-container">
+			<h1 class="cx-wizard-heading <?php echo $hide_title ?>"><a href="<?php echo $this->get_step_url( array_keys( $this->steps )[0] ); ?>"><?php echo $this->name; ?></a></h1>
+		<?php
+	}
 
-		echo '<ul id="cx-posts-wrapper">';
+	public function pagination() {
 		
-		foreach ( $posts as $post ) {
+		echo '<div class="cx-wizard-stepper-wrapper">';
 
-			$post_link = add_query_arg( $utm, $post['link'] );
+		$count = 1;
+		$passed = 'passed-step';
+
+		foreach ( $this->steps as $step => $data ) {
+
+			$_classes = [ 'cx-step' ];
+			if( $step == $this->current_step() ) {
+				$_classes[] = 'current-step';
+			}
+			if( $step == $this->previous_step() ) {
+				$_classes[] = 'previous-step';
+			}
+			if( $step == $this->next_step() ) {
+				$_classes[] = 'next-step';
+			}
+
+			$classes = implode( ' ', $_classes );
+			$url = $this->get_step_url( $step );
+
 			echo "
-			<li>
-				<a href='{$post_link}' target='_blank'><span class='cx-post-title'>{$post['title']['rendered']}</span></a>
-				" . wpautop( wp_trim_words( $post['content']['rendered'], 10 ) ) . "
-			</li>";
+			  <div class='cx-wizard-stepper-item cx-step-{$count} {$classes} {$passed}'>
+			    <div class='cx-wizard-step-counter'>{$count}</div>
+			    <div class='cx-wizard-step-name'><a href='{$url}'>{$data['label']}</a></div>
+			  </div>
+			";
+
+			$count++;
+
+			if ( $step == $this->current_step() ) {
+				$passed = '';
+			}
 		}
+
+		echo '</div>'; ?>
+
+		<div class="cx-wizard-content">
+			<?php 
+			$current_step 	= $this->current_step();
+			$action 		= add_query_arg( 'saved', 1, $this->get_step_url( $current_step ) );
+			echo "<form id='cx-{$current_step}-form' method='POST' action='{$action}'>";
+			?>
+		<div class="cx-wizard-page">
+		<?php
+	}
+
+	public function body() {
+
+		// if a template file is passed
+		if( isset( $this->steps[ $this->current_step() ]['template'] ) && file_exists( $template = $this->steps[ $this->current_step() ]['template'] ) ) {
+			ob_start();
+			include $template;
+			echo ob_get_clean();
+		}
+
+		// if a function or method passed
+		elseif( isset( $this->steps[ $this->current_step() ]['callback'] ) && ( is_string( $callback = $this->steps[ $this->current_step() ]['callback'] ) && ( function_exists( $callback ) ) || method_exists( $callback[0], $callback[1] ) ) ) {
+			call_user_func( $callback );
+		}
+
+		// if a string passed
+		elseif( isset( $this->steps[ $this->current_step() ]['content'] ) ) {
+			echo $this->steps[ $this->current_step() ]['content'];
+		}
+	}
+
+	public function footer() {
+		?>
+								<div class="cx-wizard-btns">
+									<?php 
+									$prev_step 		= $this->previous_step();
+									$current_step 	= $this->current_step();
+									$next_step 		= $this->next_step();
+									$prev_step_url 	= $this->get_step_url( $prev_step );
+									$disabled		= $prev_step == $current_step ? 'disabled' : '';
+									$previous_text 	= __( 'Previous', 'cx-plugin' );
+									$button_text	= $current_step == $next_step ? __( 'Finish', 'cx-plugin' ) : __( 'Next', 'cx-plugin' );
+									echo "<a class='cx-wizard-btn prev {$disabled}' href='{$prev_step_url}'>{$previous_text}</a>";
+									echo "<button id='{$current_step}-btn' class='cx-wizard-btn next'>{$button_text}</button>";
+									?>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</body>
+		</html>
+		<?php
+	}
+
+	public function save_setup() {
+		$current_step = $this->current_step();
+		if( !is_null( $current_action = $this->steps[ $current_step ]['action'] ) ) {
+			if( method_exists( $current_action[0], $current_action[1] ) || function_exists( $current_action ) ) {
+				call_user_func( $current_action );
+				if( isset( $_GET['saved'] ) ) {
+					$redirect = isset( $this->steps[ $current_step ]['redirect'] ) ? $this->steps[ $current_step ]['redirect'] : $this->get_step_url( $this->next_step( $current_step ) );
+					wp_safe_redirect( $redirect );
+					exit();
+				}
+			}
+		}
+	}
+
+	public function current_step() {
+		if( isset( $_GET['step'] ) && array_key_exists( $_GET['step'], $this->steps ) ) {
+			return $_GET['step'];
+		}
+
+		return array_keys( $this->steps )[0];
+	}
+
+	/**
+	 * @param string $step relative step
+	 */
+	public function previous_step( $step = null ) {
+		$current_step = is_null( $step ) ? $this->current_step() : $step;
+		$current_step_position = array_search( $current_step, array_keys( $this->steps ) );
+		$previous_step_position = $current_step_position - 1;
 		
-		echo '</ul>';
-		endif; // count( $posts ) > 0
-
-		$_links = apply_filters( 'cx-overview_links', [
-			'products'	=> [
-				'url'		=> add_query_arg( $utm, 'https://codexpert.io/products/' ),
-				'label'		=> __( 'Our Plugins', 'cx-plugin' ),
-				'target'	=> '_blank',
-			],
-			'hire'	=> [
-				'url'		=> add_query_arg( $utm, 'https://codexpert.io/blog/' ),
-				'label'		=> __( 'Blog', 'cx-plugin' ),
-				'target'	=> '_blank',
-			],
-		] );
-
-		$footer_links = [];
-		foreach ( $_links as $id => $link ) {
-			$_has_icon = ( $link['target'] == '_blank' ) ? '<span class="screen-reader-text">' . __( '(opens in a new tab)', 'cx-plugin' ) . '</span> <span aria-hidden="true" class="dashicons dashicons-external"></span>' : '';
-
-			$footer_links[] = "<a href='{$link['url']}' target='{$link['target']}'>{$link['label']}{$_has_icon}</a>";
+		if( $previous_step_position <= 0 ) {
+			$previous_step_position = 0;
 		}
 
-		echo '<p class="community-events-footer">' . implode( ' | ', $footer_links ) . '</p>';
+		return array_keys( $this->steps )[ $previous_step_position ];
+	}
+
+	/**
+	 * @param string $step relative step
+	 */
+	public function next_step( $step = null ) {
+		$current_step = is_null( $step ) ? $this->current_step() : $step;
+		$current_step_position = array_search( $current_step, array_keys( $this->steps ) );
+		$next_step_position = $current_step_position + 1;
+		
+		if( $next_step_position >= count( $this->steps ) ) {
+			$next_step_position = $current_step_position;
+		}
+
+		return array_keys( $this->steps )[ $next_step_position ];
+	}
+
+	public function get_step_url( $step = '' ) {
+		return add_query_arg( [ 'page' => "{$this->slug}_setup", 'step' => $step ], $this->admin_url );
 	}
 }
