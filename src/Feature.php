@@ -57,16 +57,15 @@ class Feature extends Base {
 	public function alter_api_result( $res, $action, $args ) {
 
 		// some $vars
-		$searching_wc = isset( $_POST['s'] ) && strpos( 'woocommerce', $_POST['s'] ) !== false;
-		$searching_el = isset( $_POST['s'] ) && strpos( 'elementor', $_POST['s'] ) !== false;
+		$searching		= isset( $_REQUEST['s'] );
+		$searching_wc	= $searching && strpos( 'woocommerce', $_REQUEST['s'] ) !== false;
+		$searching_el	= $searching && strpos( 'elementor', $_REQUEST['s'] ) !== false;
 
-		if(
-			( isset( $_GET['tab'] ) && $_GET['tab'] != 'featured' ) // not the Featured tab
-			|| ( defined( 'DOING_AJAX' ) && DOING_AJAX && ! $searching_wc && ! $searching_el ) // not a search result
-		) return $res;
+		// not the Featured or Search tab
+		if ( isset( $_GET['tab'] ) && ! in_array( $_GET['tab'], [ 'featured', 'search' ] ) ) return $res;
 
 		// searching for WooCommerce
-		if( $searching_wc ) {
+		if ( $searching_wc ) {
 			$this->featured_plugins = [
 				'wc-affiliate',
 				'restrict-elementor-widgets',
@@ -76,12 +75,17 @@ class Feature extends Base {
 		}
 
 		// searching for Elementor
-		if( $searching_el ) {
+		elseif ( $searching_el ) {
 			$this->featured_plugins = [
 				'restrict-elementor-widgets',
 				'woolementor',
 			];
 			$this->reserved_plugins = [ 'elementor' ];
+		}
+
+		// searching for something else
+		elseif ( $searching ) {
+			$this->featured_plugins = $this->reserved_plugins = [];
 		}
 
 		remove_filter( 'plugins_api_result', [ $this, 'alter_api_result' ] );
