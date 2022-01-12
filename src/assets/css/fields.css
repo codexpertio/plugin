@@ -12,6 +12,7 @@
     display: grid;
     margin-bottom: 60px;
     grid-template-columns: 2fr 8fr;
+    overflow: hidden;
 }
 .cx-navs-wrapper {
     z-index: 2;
@@ -418,6 +419,8 @@ select.cx-field-select:disabled {
     .cx-sticky-controls {
         left: 160px;
         width: calc(100% - 160px);
+        position: fixed;
+        text-align: center;
     }
 }
 @media only screen and (min-width: 1200px) {
