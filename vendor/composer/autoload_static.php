@@ -4,24 +4,28 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitf391c31839d19513a67b1da8a28fcdd3
+class ComposerStaticInit9d6af050f0e6e86420d25ea3c3afe16f
 {
     public static $classMap = array (
-        'codexpert\\product\\Base' => __DIR__ . '/../..' . '/src/Base.php',
-        'codexpert\\product\\Fields' => __DIR__ . '/../..' . '/src/Fields.php',
-        'codexpert\\product\\License' => __DIR__ . '/../..' . '/src/License.php',
-        'codexpert\\product\\Metabox' => __DIR__ . '/../..' . '/src/Metabox.php',
-        'codexpert\\product\\Settings' => __DIR__ . '/../..' . '/src/Settings.php',
-        'codexpert\\product\\Survey' => __DIR__ . '/../..' . '/src/Survey.php',
-        'codexpert\\product\\Table' => __DIR__ . '/../..' . '/src/Table.php',
-        'codexpert\\product\\Update' => __DIR__ . '/../..' . '/src/Update.php',
-        'codexpert\\product\\Wizard' => __DIR__ . '/../..' . '/src/Wiazrd.php',
+        'Codexpert\\Plugin\\Base' => __DIR__ . '/../..' . '/src/Base.php',
+        'Codexpert\\Plugin\\Deactivator' => __DIR__ . '/../..' . '/src/Deactivator.php',
+        'Codexpert\\Plugin\\Feature' => __DIR__ . '/../..' . '/src/Feature.php',
+        'Codexpert\\Plugin\\Fields' => __DIR__ . '/../..' . '/src/Fields.php',
+        'Codexpert\\Plugin\\License' => __DIR__ . '/../..' . '/src/License.php',
+        'Codexpert\\Plugin\\Metabox' => __DIR__ . '/../..' . '/src/Metabox.php',
+        'Codexpert\\Plugin\\Notice' => __DIR__ . '/../..' . '/src/Notice.php',
+        'Codexpert\\Plugin\\Settings' => __DIR__ . '/../..' . '/src/Settings.php',
+        'Codexpert\\Plugin\\Setup' => __DIR__ . '/../..' . '/src/Setup.php',
+        'Codexpert\\Plugin\\Survey' => __DIR__ . '/../..' . '/src/Survey.php',
+        'Codexpert\\Plugin\\Table' => __DIR__ . '/../..' . '/src/Table.php',
+        'Codexpert\\Plugin\\Update' => __DIR__ . '/../..' . '/src/Update.php',
+        'Codexpert\\Plugin\\Widget' => __DIR__ . '/../..' . '/src/Widget.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInitf391c31839d19513a67b1da8a28fcdd3::$classMap;
+            $loader->classMap = ComposerStaticInit9d6af050f0e6e86420d25ea3c3afe16f::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -80,42 +80,47 @@ class Setup extends Base {
 
 	public function pagination() {
 		
-		echo '<div class="cx-wizard-stepper-wrapper">';
+		if( count( $this->steps ) > 1 ) {
+			
+			echo '<div class="cx-wizard-stepper-wrapper">';
 
-		$count = 1;
-		$passed = 'passed-step';
+			$count = 1;
+			$passed = 'passed-step';
 
-		foreach ( $this->steps as $step => $data ) {
+			foreach ( $this->steps as $step => $data ) {
 
-			$_classes = [ 'cx-step' ];
-			if( $step == $this->current_step() ) {
-				$_classes[] = 'current-step';
+				$_classes = [ 'cx-step' ];
+				if( $step == $this->current_step() ) {
+					$_classes[] = 'current-step';
+				}
+				if( $step == $this->previous_step() ) {
+					$_classes[] = 'previous-step';
+				}
+				if( $step == $this->next_step() ) {
+					$_classes[] = 'next-step';
+				}
+
+				$classes = implode( ' ', $_classes );
+				$url = $this->get_step_url( $step );
+
+				echo "
+				  <div class='cx-wizard-stepper-item cx-step-{$count} {$classes} {$passed}'>
+				    <div class='cx-wizard-step-counter'>{$count}</div>
+				    <div class='cx-wizard-step-name'><a href='{$url}'>{$data['label']}</a></div>
+				  </div>
+				";
+
+				$count++;
+
+				if ( $step == $this->current_step() ) {
+					$passed = '';
+				}
 			}
-			if( $step == $this->previous_step() ) {
-				$_classes[] = 'previous-step';
-			}
-			if( $step == $this->next_step() ) {
-				$_classes[] = 'next-step';
-			}
 
-			$classes = implode( ' ', $_classes );
-			$url = $this->get_step_url( $step );
-
-			echo "
-			  <div class='cx-wizard-stepper-item cx-step-{$count} {$classes} {$passed}'>
-			    <div class='cx-wizard-step-counter'>{$count}</div>
-			    <div class='cx-wizard-step-name'><a href='{$url}'>{$data['label']}</a></div>
-			  </div>
-			";
-
-			$count++;
-
-			if ( $step == $this->current_step() ) {
-				$passed = '';
-			}
+			echo '</div>';
 		}
 
-		echo '</div>'; ?>
+		?>
 
 		<div class="cx-wizard-content">
 			<?php 

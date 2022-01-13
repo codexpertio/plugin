@@ -6,13 +6,17 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'codexpert\\product\\Base' => $baseDir . '/src/Base.php',
-    'codexpert\\product\\Fields' => $baseDir . '/src/Fields.php',
-    'codexpert\\product\\License' => $baseDir . '/src/License.php',
-    'codexpert\\product\\Metabox' => $baseDir . '/src/Metabox.php',
-    'codexpert\\product\\Settings' => $baseDir . '/src/Settings.php',
-    'codexpert\\product\\Survey' => $baseDir . '/src/Survey.php',
-    'codexpert\\product\\Table' => $baseDir . '/src/Table.php',
-    'codexpert\\product\\Update' => $baseDir . '/src/Update.php',
-    'codexpert\\product\\Wizard' => $baseDir . '/src/Wiazrd.php',
+    'Codexpert\\Plugin\\Base' => $baseDir . '/src/Base.php',
+    'Codexpert\\Plugin\\Deactivator' => $baseDir . '/src/Deactivator.php',
+    'Codexpert\\Plugin\\Feature' => $baseDir . '/src/Feature.php',
+    'Codexpert\\Plugin\\Fields' => $baseDir . '/src/Fields.php',
+    'Codexpert\\Plugin\\License' => $baseDir . '/src/License.php',
+    'Codexpert\\Plugin\\Metabox' => $baseDir . '/src/Metabox.php',
+    'Codexpert\\Plugin\\Notice' => $baseDir . '/src/Notice.php',
+    'Codexpert\\Plugin\\Settings' => $baseDir . '/src/Settings.php',
+    'Codexpert\\Plugin\\Setup' => $baseDir . '/src/Setup.php',
+    'Codexpert\\Plugin\\Survey' => $baseDir . '/src/Survey.php',
+    'Codexpert\\Plugin\\Table' => $baseDir . '/src/Table.php',
+    'Codexpert\\Plugin\\Update' => $baseDir . '/src/Update.php',
+    'Codexpert\\Plugin\\Widget' => $baseDir . '/src/Widget.php',
 );
