@@ -91,20 +91,26 @@ class Feature extends Base {
 		remove_filter( 'plugins_api_result', [ $this, 'alter_api_result' ] );
 		
 		// unset reserved plugins
-		foreach ( $res->plugins as $index => $plugin ) {
-			if( is_array( $plugin ) && in_array( $plugin['slug'], $this->reserved_plugins ) ) {
-				unset( $res->plugins[ $index ] );
+		if( count( $res->plugins ) > 0 ) {
+			foreach ( $res->plugins as $index => $plugin ) {
+				if( is_array( $plugin ) && in_array( $plugin['slug'], $this->reserved_plugins ) ) {
+					unset( $res->plugins[ $index ] );
+				}
 			}
 		}
 
 		// add ours
-		foreach ( $this->featured_plugins as $featured_plugin ) {
-			$res = $this->add_to_list( $featured_plugin, $res );
+		if( count( $this->featured_plugins ) > 0 ) {
+			foreach ( $this->featured_plugins as $featured_plugin ) {
+				$res = $this->add_to_list( $featured_plugin, $res );
+			}
 		}
 
 		// re-add reserved
-		foreach ( $this->reserved_plugins as $reserved ) {
-			$res = $this->add_to_list( $reserved, $res );
+		if( count( $this->reserved_plugins ) > 0 ) {
+			foreach ( $this->reserved_plugins as $reserved ) {
+				$res = $this->add_to_list( $reserved, $res );
+			}
 		}
 
 		return $res;
