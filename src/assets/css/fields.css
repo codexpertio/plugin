@@ -340,7 +340,7 @@ select.cx-field-select:disabled {
     line-height: 18px;
     cursor: pointer;
     border-radius: 4px;
-    transition: all 0.4s;
+    transition: all 0.2s;
 }
 .cx-repeater-remove {
     background: #d30b5c;
