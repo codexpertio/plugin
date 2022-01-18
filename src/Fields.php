@@ -93,10 +93,10 @@ abstract class Fields extends Base {
 
 		do_action( 'cx-settings-heading', $config );
 
-		if( !isset( $this->sections ) || count( $this->sections ) <= 0 ) return;
+		if( ! isset( $this->sections ) || count( $this->sections ) <= 0 ) return;
 
 		$tab_position = isset( $config['tab_position'] ) ? $config['tab_position'] : 'left';
-		echo "<div class='cx-wrapper cx-shadow cx-tab-{$tab_position}'>";
+		echo "<div class='cx-wrapper cx-shadow cx-tab-{$tab_position} cx-sections-" . count( $this->sections ) . "'>";
 
 		$sections = $this->sections;
 
