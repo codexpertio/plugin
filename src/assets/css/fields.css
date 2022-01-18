@@ -14,6 +14,9 @@
     grid-template-columns: 2fr 8fr;
     overflow: hidden;
 }
+.cx-wrapper.cx-sections-1 {
+    grid-template-columns: inherit;
+}
 .cx-navs-wrapper {
     z-index: 2;
     position: relative;
