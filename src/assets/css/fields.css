@@ -330,6 +330,36 @@ select.cx-field-select:disabled {
   position: relative;
   top: 2px;
 }
+.cx-row-tabs > .cx-field-wrap {
+    padding-left: 0;
+}
+.cx-repeatable button {
+    height: 32px;
+    width: 32px;
+    font-size: 18px;
+    line-height: 18px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.4s;
+}
+.cx-repeater-remove {
+    background: #d30b5c;
+    border: 1px solid #d30b5c;
+    color: #fff;
+}
+.cx-repeater-remove:hover {
+    background: #fff;
+    color: #d30b5c;
+}
+.cx-repeater-add {
+    background: #4caf50;
+    border: 1px solid #4caf50;
+    color: #fff;
+}
+.cx-repeater-add:hover {
+    background: #fff;
+    color: #4caf50;
+}
 #cx-overlay {
     position: absolute;
     left: 0;
@@ -428,13 +458,6 @@ select.cx-field-select:disabled {
 }
 @media only screen and (min-width: 1200px) {
     .cx-sections-wrapper {
-    }
-    .cx-label-wrap {
-        width: 15%;
-    }
-    .cx-field-wrap {
-        padding: 15px 0;
-        width: 83% !important;
     }
     .cx-field-wrap .cx-field-file {
         width: 80%;
