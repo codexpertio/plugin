@@ -107,7 +107,7 @@ abstract class Fields extends Base {
 			<ul class="cx-nav-tabs">';
 		foreach ( $sections as $section ) {
 			$icon = $this->generate_icon( $section['icon'] );
-			$color = isset( $section['color'] ) ? $section['color'] : '#23282d';
+			$color = isset( $section['color'] ) ? $section['color'] : '#1c2327';
 			echo "<li class='cx-nav-tab' data-color='{$color}'><a href='#{$section['id']}'>{$icon}<span id='cx-nav-label-{$section['id']}' class='cx-nav-label'> {$section['label']}</span></a></li>";
 		}
 		echo '</ul>
@@ -117,7 +117,7 @@ abstract class Fields extends Base {
 		echo '<div class="cx-sections-wrapper">';
 		foreach ( $sections as $section ) {
 			$icon = $this->generate_icon( $section['icon'] );
-			$color = isset( $section['color'] ) ? $section['color'] : '#23282d';
+			$color = isset( $section['color'] ) ? $section['color'] : '#1c2327';
 			$submit_button = isset( $section['submit_button'] ) ? $section['submit_button'] : __( 'Save Settings' );
 			$reset_button = isset( $section['reset_button'] ) ? $section['reset_button'] : __( 'Reset Default' );
 			$_nonce = wp_create_nonce();
@@ -583,6 +583,9 @@ abstract class Fields extends Base {
 	public function field_tabs( $field, $section, $scope ) {
 		$tabs = $field['items'];
 		$html = $buttons = $content = '';
+		if( ! isset( $section['color'] ) ) {
+			$section['color'] = '#1c2327';
+		}
 
 
 		$count = 0;
