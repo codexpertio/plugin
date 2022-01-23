@@ -88,7 +88,7 @@ abstract class Fields extends Base {
 
 		if( $scope == 'option' ) :
 		$icon = $this->generate_icon( $config['icon'] );
-		echo "<h2 class='cx-heading cx-shadow'>{$icon} {$config['title']}</h2>";
+		echo "<h2 class='cx-heading'>{$icon} {$config['title']}</h2>";
 		endif;
 
 		do_action( 'cx-settings-heading', $config );

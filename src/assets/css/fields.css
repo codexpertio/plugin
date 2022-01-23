@@ -6,6 +6,7 @@
     font-size: 24px !important;
     line-height: 24px !important;
     font-family: 'Chonburi', cursive;
+    box-shadow: rgb(9 30 66 / 25%) 0px 8px 16px -4px, rgb(9 30 66 / 31%) 0px 0px 1px;
 }
 .cx-wrapper {
     background: #fff;
