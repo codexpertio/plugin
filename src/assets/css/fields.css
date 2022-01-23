@@ -1,3 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Chonburi&display=swap');
+.wrap > .cx-heading {
+    padding: 20px !important;
+    background: #fff;
+    margin: 20px auto !important;
+    font-size: 24px !important;
+    line-height: 24px !important;
+    font-family: 'Chonburi', cursive;
+}
 .cx-wrapper {
     background: #fff;
     border: none;
@@ -103,7 +112,7 @@
     width: 100% !important;
 }
 .cx-desc {
-    color: #666;
+    color: #a7a7a7;
     font-style: italic;
 }
 .cx-row {
