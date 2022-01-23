@@ -10,17 +10,18 @@
 	align-items: center;
 	justify-content: center;
 }
-.cx-plugin-deactivation-survey-modal{
-	width: 50%;
-	background: #fff;
+.cx-plugin-deactivation-survey-modal {
+    width: 50%;
+    background: #fff;
+    padding: 10px;
+    border-radius: 10px;
 }
-
 .cx-plugin-deactivation-survey-modal .cx-plugin-dsm-header {
 	padding: 0px 15px;
-	border-bottom: 1px solid #ccc;
+	border-bottom: 1px solid #f1f1f1;
 }
 .cx-plugin-deactivation-survey-modal .cx-plugin-dsm-body {
-	padding: 10px 15px;
+    padding: 20px 15px;
 }
 .cx-plugin-deactivation-survey-modal .cx-plugin-deactivation-reasons {
 	display: flex;
@@ -30,8 +31,9 @@
 .cx-plugin-deactivation-survey-modal .cx-plugin-deactivation-reasons .cx-plugin-deactivation-reason{
 	width: 16%;
 }
-.cx-plugin-deactivation-survey-modal .cx-plugin-deactivation-reasons .cx-plugin-deactivation-reason .dashicons::before{
-	
+.cx-plugin-dsm-header .cx-title {
+    margin-top: 0;
+    float: left;
 }
 .cx-plugin-deactivation-survey-modal .cx-plugin-deactivation-reasons .cx-plugin-deactivation-reason label {
 	display: block;
@@ -40,6 +42,10 @@
 	text-align: center;
 	height: 40px;
 	border-radius: 4px;
+}
+.cx-plugin-dsm-footer .button:not(.button-primary):not(:hover) {
+    border-color: #dee0e1;
+    color: #949799;
 }
 .cx-plugin-deactivation-survey-modal .cx-plugin-deactivation-reasons .cx-plugin-deactivation-reason label.active {
 	background: #007cba;
@@ -55,10 +61,10 @@
 	display: none;
 }
 .cx-plugin-deactivation-survey-modal .cx-plugin-dsm-footer {
-	border-top: 1px solid #ccc;
-	display: flex;
-	justify-content: space-between;
-	padding: 10px 15px;
+    border-top: 1px solid #f1f1f1;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 10px 10px 10px;
 }
 .cx-heading {
 	font-weight: normal;
@@ -71,11 +77,9 @@
 	text-align: right;
 	margin: 0 auto 5px auto;
 }
-.cx-title {
-	float: left;
-}
 .cx-consent-label {
 	float: right;
 	font-size: 12px;
 	padding-right: 5px;
+	cursor: pointer;
 }
