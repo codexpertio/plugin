@@ -104,7 +104,8 @@ class Deactivator extends Base {
 					<div class="cx-plugin-dsm-footer">
 						<a href="" class="button cx-plugin-dsm-skip-btn"><?php _e( 'Skip & Deactivate', 'codexpert' ) ?></a>
 						<div class="cx-plugin-dsm-submit">
-							<button class="button cx-plugin-dsm-btn cx-plugin-dsm-close"><?php _e( 'Cancle', 'codexpert' ) ?></button>
+							<button class="button cx-plugin-dsm-btn cx-plugin-dsm-close"><?php _e( 'Cancel', 'codexpert' ) ?></button>
+							&nbsp;
 							<button class="button button-primary cx-plugin-dsm-btn cx-plugin-dsm-submit" type="submit"><?php _e( 'Submit & Deactivate', 'codexpert' ) ?></button>
 						</div>
 					</div>
