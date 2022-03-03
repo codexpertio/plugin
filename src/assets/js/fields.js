@@ -117,8 +117,9 @@ jQuery(function ($) {
 
     $('.cx-tab').click(function(e){
         var target = $(this).data('target')
-        $('.cx-tab-content').hide()
-        $('.cx-tab').removeClass('cx-tab-active')
+        var par = $(this).closest('.cx-field-wrap')
+        $('.cx-tab-content',par).hide()
+        $('.cx-tab',par).removeClass('cx-tab-active')
         $(this).addClass('cx-tab-active')
         $('#'+target).show()
     })
