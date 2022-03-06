@@ -96,13 +96,16 @@ class Settings extends Fields {
 		if( !wp_verify_nonce( $_POST['_wpnonce'] ) ) {
 			wp_send_json( array( 'status' => 0, 'message' => __( 'Unauthorized!' ) ) );
 		}
-		$option_name = $_POST['option_name'];
+		$section_name = $_POST['option_name'];
 
-		$is_savable = apply_filters( 'cx-settings-resetable', true, $option_name, $_POST );
+		$is_savable = apply_filters( 'cx-settings-resetable', true, $section_name, $_POST );
 
 		if( ! $is_savable ) wp_send_json( apply_filters( 'cx-settings-response', array( 'status' => -1, 'message' => __( 'Ignored' ) ), $_POST ) );
 
-		delete_option( $_POST['option_name'] );
+		delete_option( $section_name );
+
+		do_action( 'cx-settings-reset', $section_name );
+
 		wp_send_json( apply_filters( 'cx-settings-response', array( 'status' => 1, 'message' => __( 'Settings Reset!' ) ), $_POST ) );
 	}
 }

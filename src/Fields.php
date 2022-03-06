@@ -173,7 +173,7 @@ abstract class Fields extends Base {
 				include $section['template'];
 			}
 			elseif( isset( $section['fields'] ) && is_array( $section['fields'] ) ) {
-				echo $this->populate_fields( $fields, $section, $scope );
+				$this->populate_fields( $fields, $section, $scope );
 			}
 
 			do_action( 'cx-settings-after-fields', $section );
@@ -214,7 +214,6 @@ abstract class Fields extends Base {
 	 * Populates all fields under a section or tab
 	 */
 	public function populate_fields( $fields, $section, $scope ) {
-		$html = '';
 
 		if( count( $fields ) > 0 ) :
 		foreach ( $fields as $field ) {
@@ -223,50 +222,48 @@ abstract class Fields extends Base {
 
 			if( isset( $field['type'] ) && $field['type'] == 'divider' ) {
 				$style = isset( $field['style'] ) ? $field['style'] : '';
-				$html .= "<div class='cx-row cx-divider' id='{$section['id']}-{$field['id']}' style='{$style}'><span>{$field['label']}</span></div>";
+				echo "<div class='cx-row cx-divider' id='{$section['id']}-{$field['id']}' style='{$style}'><span>{$field['label']}</span></div>";
 			}
 			else {
 				$field_display = isset( $field['condition'] ) && is_array( $field['condition'] ) ? 'none' : '';
-				$html .= "
+				echo "
 				<div id='cx-row-{$section['id']}-{$field['id']}' class='cx-row cx-row-{$section['id']} cx-row-{$field['type']}' style='display: {$field_display}'>";
 
 				if( $_show_label ) {
-					$html .= "<div class='cx-label-wrap'>";
+					echo "<div class='cx-label-wrap'>";
 
 					do_action( 'cx-settings-before-label', $field, $section );
 
-					$html .= "<label for='{$section['id']}-{$field['id']}'>{$field['label']}</label>";
+					echo "<label for='{$section['id']}-{$field['id']}'>{$field['label']}</label>";
 
 					do_action( 'cx-settings-after-label', $field, $section );
 
-					$html .= "</div>";
+					echo "</div>";
 				}
 
 				$_label_class = $_show_label ? '' : 'cx-field-wrap-nolabel';
 				
-				$html .= "<div class='cx-field-wrap {$_label_class}'>";
+				echo "<div class='cx-field-wrap {$_label_class}'>";
 
 					do_action( 'cx-settings-before-field', $field, $section );
 
-					if( isset( $field['template'] ) && $field['template'] != '' ) $html .= $field['template'];
+					if( isset( $field['template'] ) && $field['template'] != '' ) echo $field['template'];
 
-					if( isset( $field['type'] ) && $field['type'] != '' ) $html .= $this->populate( $field, $section, $scope );
+					if( isset( $field['type'] ) && $field['type'] != '' ) echo $this->populate( $field, $section, $scope );
 
 					do_action( 'cx-settings-after-field', $field, $section );
 
 					if( isset( $field['desc'] ) && $field['desc'] != '' ) {
-						$html .= "<p class='cx-desc'>{$field['desc']}</p>";
+						echo "<p class='cx-desc'>{$field['desc']}</p>";
 					}
 
 				do_action( 'cx-settings-after-description', $field, $section );
 
-				$html .= "</div>
+				echo "</div>
 				</div>";
 			}
 		}
 		endif; // if( count( $fields ) > 0 ) :
-
-		return $html;
 	}
 	
 	/**
@@ -596,7 +593,12 @@ abstract class Fields extends Base {
 			$buttons .= "<a class='cx-tab {$btn_active}' data-target='cx-tab-{$section['id']}-{$id}'>{$tab['label']}</a>";
 
 			$content .= "<div class='cx-tab-content' id='cx-tab-{$section['id']}-{$id}' style='display: {$cnt_display}'>";
-			$content .= $this->populate_fields( $tab['fields'], $section, $scope );
+			
+			ob_start();
+			$this->populate_fields( $tab['fields'], $section, $scope );
+			$content .= ob_get_clean();
+			ob_flush();
+
 			$content .= "</div>";
 
 
