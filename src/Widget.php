@@ -33,45 +33,10 @@ class Widget extends Base {
 	}
 
 	public function hooks() {
-		$this->activate( 'install' );
-		$this->action( 'codexpert-daily', 'daily' );
 		$this->action( 'wp_dashboard_setup', 'dashboard_widget', 99 );
+		$this->action( 'wp_ajax_fetch-cx-blog', 'fetch_blog_posts', 99 );
 	}
-
-	/**
-	 * Installer. Runs once when the plugin in activated.
-	 *
-	 * @since 1.0
-	 */
-	public function install() {
-		/**
-		 * Schedule an event to sync help docs
-		 */
-		if ( !wp_next_scheduled ( 'codexpert-daily' )) {
-		    wp_schedule_event( time(), 'daily', 'codexpert-daily' );
-		}
-
-		if( get_option( 'codexpert-blog-json' ) == '' ) {
-			$this->daily();
-		}
-	}
-
-	/**
-	 * Daily events
-	 */
-	public function daily() {
-		/**
-		 * Sync blog posts from https://codexpert.io
-		 *
-		 * @since 1.0
-		 */
-	    $_posts = 'https://codexpert.io/wp-json/wp/v2/posts/';
-	    if( !is_wp_error( $_posts_data = wp_remote_get( $_posts ) ) ) {
-	        update_option( 'codexpert-blog-json', json_decode( $_posts_data['body'], true ) );
-	    }
-	}
-
-
+	
 	/**
 	 * Adds a widget in /wp-admin/index.php page
 	 *
@@ -99,6 +64,11 @@ class Widget extends Base {
 	 * @since 1.0
 	 */
 	public function callback_dashboard_widget() {
+		?>
+		<script type="text/javascript">
+			jQuery(function($){ $.get( ajaxurl, { action : 'fetch-cx-blog' }); });
+		</script>
+		<?php
 		$posts = get_option( 'codexpert-blog-json', [] );
 		$utm = [ 'utm_source' => 'dashboard', 'utm_medium' => 'metabox', 'utm_campaign' => 'blog-post' ];
 		
@@ -142,5 +112,11 @@ class Widget extends Base {
 		}
 
 		echo '<p class="community-events-footer">' . implode( ' | ', $footer_links ) . '</p>';
+	}
+
+	public function fetch_blog_posts() {
+		if( ! is_wp_error( $_posts_data = wp_remote_get( 'https://codexpert.io/wp-json/wp/v2/posts/' ) ) ) {
+		    update_option( 'codexpert-blog-json', json_decode( $_posts_data['body'], true ) );
+		}
 	}
 }

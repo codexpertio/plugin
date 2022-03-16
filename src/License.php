@@ -46,11 +46,26 @@ class License {
 	}
 
 	public function hooks() {
+		register_activation_hook( __FILE__, [ $this, 'install' ] );
 		add_action( 'codexpert-daily', [ $this, 'validate' ] );
 		add_action( 'admin_init', [ $this, 'init' ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ], 99 );
 		add_action( 'plugins_loaded', [ $this, 'gather_notices' ] );
 		add_action( 'rest_api_init', [ $this, 'register_endpoints' ] );
+	}
+
+	/**
+	 * Installer. Runs once when the plugin in activated.
+	 *
+	 * @since 1.0
+	 */
+	public function install() {
+		/**
+		 * Schedule an event to sync help docs
+		 */
+		if ( ! wp_next_scheduled ( 'codexpert-daily' )) {
+		    wp_schedule_event( time(), 'daily', 'codexpert-daily' );
+		}
 	}
 
 	public function validate() {
