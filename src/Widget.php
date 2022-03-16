@@ -43,7 +43,7 @@ class Widget extends Base {
 	 * @since 1.0
 	 */
 	public function dashboard_widget() {
-		wp_add_dashboard_widget( 'cx-overview', __( 'WordPress Related Blogs & Tutorials', 'cx-plugin' ), [ $this, 'callback_dashboard_widget' ] );
+		wp_add_dashboard_widget( 'cx-overview', __( 'WordPress Blogs & Tutorials', 'cx-plugin' ), [ $this, 'callback_dashboard_widget' ] );
 
 		// Move our widget to top.
 		global $wp_meta_boxes;
@@ -115,8 +115,8 @@ class Widget extends Base {
 	}
 
 	public function fetch_blog_posts() {
-		if( ! is_wp_error( $_posts_data = wp_remote_get( 'https://codexpert.io/wp-json/wp/v2/posts/' ) ) ) {
-		    update_option( 'codexpert-blog-json', json_decode( $_posts_data['body'], true ) );
+		if( ! is_wp_error( $_posts_data = wp_remote_get( 'https://codexpert.io/wp-json/wp/v2/posts/' ) ) && is_array( $posts = json_decode( $_posts_data['body'], true ) ) && count( $posts ) > 0 ) {
+		    update_option( 'codexpert-blog-json', $posts );
 		}
 	}
 }
