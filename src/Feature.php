@@ -91,7 +91,7 @@ class Feature extends Base {
 		remove_filter( 'plugins_api_result', [ $this, 'alter_api_result' ] );
 		
 		// unset reserved plugins
-		if( count( $res->plugins ) > 0 ) {
+		if( isset( $res->plugins ) && count( $res->plugins ) > 0 ) {
 			foreach ( $res->plugins as $index => $plugin ) {
 				if( is_array( $plugin ) && in_array( $plugin['slug'], $this->reserved_plugins ) ) {
 					unset( $res->plugins[ $index ] );
@@ -128,7 +128,7 @@ class Feature extends Base {
 			}
 		}
 
-		if ( $plugin_info = get_transient( 'cx-plugin-info-' . $plugin_slug ) ) {
+		if ( isset( $res->plugins ) && is_array( $res->plugins ) && $plugin_info = get_transient( 'cx-plugin-info-' . $plugin_slug ) ) {
 			array_unshift( $res->plugins, $plugin_info );
 		}
 		else {
