@@ -54,7 +54,7 @@ class Settings extends Fields {
 
 	public function enqueue_scripts() {
 
-		if( !isset( $_GET['page'] ) || $_GET['page'] != $this->config['id'] ) return;
+		if( ! isset( $_GET['page'] ) || $_GET['page'] != $this->config['id'] ) return;
 
 		parent::enqueue_scripts();
     }
@@ -69,43 +69,88 @@ class Settings extends Fields {
 	}
 
 	public function save_settings() {
-		if( !wp_verify_nonce( $_POST['_wpnonce'] ) ) {
+		if( ! wp_verify_nonce( $_POST['_wpnonce'] ) || ! current_user_can( 'manage_options' ) ) {
 			wp_send_json( array( 'status' => 0, 'message' => __( 'Unauthorized!' ) ) );
 		}
-		$option_name = $_POST['option_name'];
 
-		$is_savable = apply_filters( 'cx-settings-savable', true, $option_name, $_POST );
+		$posted_data	= $this->sanitize( $_POST, 'array' );
 
-		if( !$is_savable ) wp_send_json( apply_filters( 'cx-settings-response', array( 'status' => -1, 'message' => __( 'Ignored' ) ), $_POST ) );
+		$option_name	= $posted_data['option_name'];
+		$page_load		= $posted_data['page_load'];
+		$is_savable		= apply_filters( 'cx-settings-savable', true, $option_name, $posted_data );
 
-		$page_load = $_POST['page_load'];
-		unset( $_POST['action'] );
-		unset( $_POST['option_name'] );
-		unset( $_POST['page_load'] );
-		unset( $_POST['_wpnonce'] );
-		unset( $_POST['_wp_http_referer'] );
+		if( ! $is_savable ) {
+			wp_send_json( apply_filters( 'cx-settings-response', array( 'status' => -1, 'message' => __( 'Ignored' ) ), $this->sanitize( $_POST, 'array' ) ) );
+		}
 
-		update_option( $option_name, $_POST );
+		unset( $posted_data['action'] );
+		unset( $posted_data['option_name'] );
+		unset( $posted_data['page_load'] );
+		unset( $posted_data['_wpnonce'] );
+		unset( $posted_data['_wp_http_referer'] );
+
+		update_option( $option_name, $posted_data );
 		
-		do_action( 'cx-settings-saved', $option_name, $_POST );
+		do_action( 'cx-settings-saved', $option_name, $posted_data );
 		
-		wp_send_json( apply_filters( 'cx-settings-response', array( 'status' => 1, 'message' => __( 'Settings Saved!' ), 'page_load' => $page_load ), $_POST ) );
+		wp_send_json( apply_filters( 'cx-settings-response', array( 'status' => 1, 'message' => __( 'Settings Saved!' ), 'page_load' => $page_load ), $posted_data ) );
 	}
 
 	public function reset_settings() {
-		if( !wp_verify_nonce( $_POST['_wpnonce'] ) ) {
+		if( ! wp_verify_nonce( $_POST['_wpnonce'] ) || ! current_user_can( 'manage_options' ) ) {
 			wp_send_json( array( 'status' => 0, 'message' => __( 'Unauthorized!' ) ) );
 		}
-		$section_name = $_POST['option_name'];
 
-		$is_savable = apply_filters( 'cx-settings-resetable', true, $section_name, $_POST );
+		$posted_data	= $this->sanitize( $_POST, 'array' );
 
-		if( ! $is_savable ) wp_send_json( apply_filters( 'cx-settings-response', array( 'status' => -1, 'message' => __( 'Ignored' ) ), $_POST ) );
+		$option_name	= $posted_data['option_name'];
+		$is_savable		= apply_filters( 'cx-settings-resetable', true, $option_name, $posted_data );
 
-		delete_option( $section_name );
+		if( ! $is_savable ) {
+			wp_send_json( apply_filters( 'cx-settings-response', array( 'status' => -1, 'message' => __( 'Ignored' ) ), $posted_data ) );
+		}
 
-		do_action( 'cx-settings-reset', $section_name );
+		delete_option( $option_name );
 
-		wp_send_json( apply_filters( 'cx-settings-response', array( 'status' => 1, 'message' => __( 'Settings Reset!' ) ), $_POST ) );
+		do_action( 'cx-settings-reset', $option_name );
+
+		wp_send_json( apply_filters( 'cx-settings-response', array( 'status' => 1, 'message' => __( 'Settings Reset!' ) ), $posted_data ) );
+	}
+
+	public function sanitize( $input, $type = 'text' ) {
+
+		if( 'array' == $type ) {
+			$sanitized = [];
+
+			foreach ( $input as $key => $value ) {
+				if( is_array( $value ) ) {
+					$sanitized[ $key ] = $this->sanitize( $value, $type );
+				}
+				else {
+					$sanitized[ $key ] = $this->sanitize( $value, 'text' );
+				}
+			}
+
+			return $sanitized;
+		}
+
+		if( ! in_array( $type, [ 'textarea', 'email', 'file', 'class', 'key', 'title', 'user', 'option', 'meta' ] ) ) {
+			$type = 'text';
+		}
+
+		if( array_key_exists( $type,
+			$maps = [
+				'text'      => 'text_field',
+				'textarea'  => 'textarea_field',
+				'file'      => 'file_name',
+				'class'     => 'html_class',
+			]
+		) ) {
+			$type = $maps[ $type ];
+		}
+
+		$fn = "sanitize_{$type}";
+
+		return $fn( $input );
 	}
 }
