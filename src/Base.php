@@ -123,4 +123,49 @@ abstract class Base {
 	public function __return_empty_string() {
 		return __return_empty_string();
 	}
+
+	/**
+	 * Sanitize data
+	 * 
+	 * @param mix $input The input
+	 * @param string $type The data type
+	 * 
+	 * @return mix
+	 */
+	public function sanitize( $input, $type = 'text' ) {
+
+		if( 'array' == $type ) {
+			$sanitized = [];
+
+			foreach ( $input as $key => $value ) {
+				if( is_array( $value ) ) {
+					$sanitized[ $key ] = $this->sanitize( $value, $type );
+				}
+				else {
+					$sanitized[ $key ] = $this->sanitize( $value, 'text' );
+				}
+			}
+
+			return $sanitized;
+		}
+
+		if( ! in_array( $type, [ 'textarea', 'email', 'file', 'class', 'key', 'title', 'user', 'option', 'meta' ] ) ) {
+			$type = 'text';
+		}
+
+		if( array_key_exists( $type,
+			$maps = [
+				'text'      => 'text_field',
+				'textarea'  => 'textarea_field',
+				'file'      => 'file_name',
+				'class'     => 'html_class',
+			]
+		) ) {
+			$type = $maps[ $type ];
+		}
+
+		$fn = "sanitize_{$type}";
+
+		return $fn( $input );
+	}
 }
