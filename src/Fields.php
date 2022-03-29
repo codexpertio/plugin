@@ -309,7 +309,7 @@ abstract class Fields extends Base {
 
 		$type 			= $field['type'];
 		$name 			= $scope == 'option' ? $field['id'] : "{$section['id']}[{$field['id']}]";
-		$label 			= $field['label'];
+		$label 			= isset( $field['label'] ) ? $field['label'] : '';
 		$id 			= "{$section['id']}-{$field['id']}";
 
 		$class 			= "cx-field cx-field-{$field['type']}";
@@ -338,7 +338,7 @@ abstract class Fields extends Base {
 		$value			= $this->esc_str( $this->get_value( $field, $section, $default, $scope ) );
 
 		$name 			= $scope == 'option' ? $field['id'] : "{$section['id']}[{$field['id']}]";
-		$label 			= $field['label'];
+		$label 			= isset( $field['label'] ) ? $field['label'] : '';
 		$id 			= "{$section['id']}-{$field['id']}";
 
 		$class 			= "cx-field cx-field-{$field['type']}";
@@ -361,7 +361,7 @@ abstract class Fields extends Base {
 		$value			= $this->get_value( $field, $section, $default, $scope );
 
 		$name 			= $scope == 'option' ? $field['id'] : "{$section['id']}[{$field['id']}]";
-		$label 			= $field['label'];
+		$label 			= isset( $field['label'] ) ? $field['label'] : '';
 		$id 			= "{$section['id']}-{$field['id']}";
 
 		$class 			= "cx-field cx-field-{$field['type']}";
@@ -387,7 +387,7 @@ abstract class Fields extends Base {
 		$value			= $this->get_value( $field, $section, $default, $scope );
 
 		$name 			= $scope == 'option' ? $field['id'] : "{$section['id']}[{$field['id']}]";
-		$label 			= $field['label'];
+		$label 			= isset( $field['label'] ) ? $field['label'] : '';
 		$id 			= "{$section['id']}-{$field['id']}";
 
 		$class 			= "cx-field cx-field-{$field['type']}";
@@ -421,7 +421,7 @@ abstract class Fields extends Base {
 		$value			= $this->get_value( $field, $section, $default, $scope );
 
 		$name 			= $scope == 'option' ? $field['id'] : "{$section['id']}[{$field['id']}]";
-		$label 			= $field['label'];
+		$label 			= isset( $field['label'] ) ? $field['label'] : '';
 		$id 			= "{$section['id']}-{$field['id']}";
 
 		$class 			= "cx-field cx-field-{$field['type']}";
@@ -462,7 +462,7 @@ abstract class Fields extends Base {
 		$value			= $this->get_value( $field, $section, $default, $scope );
 
 		$name 			= $scope == 'option' ? $field['id'] : "{$section['id']}[{$field['id']}]";
-		$label 			= $field['label'];
+		$label 			= isset( $field['label'] ) ? $field['label'] : '';
 		$id 			= "{$section['id']}-{$field['id']}";
 
 		$class 			= "cx-field cx-field-{$field['type']}";
@@ -501,7 +501,7 @@ abstract class Fields extends Base {
 
 		$type 			= $field['type'];
 		$name 			= $scope == 'option' ? $field['id'] : "{$section['id']}[{$field['id']}]";
-		$label 			= $field['label'];
+		$label 			= isset( $field['label'] ) ? $field['label'] : '';
 		$id 			= "{$section['id']}-{$field['id']}";
 
 		$class 			= "cx-field cx-field-{$field['type']}";
@@ -527,7 +527,7 @@ abstract class Fields extends Base {
 		$value			= stripslashes( $this->get_value( $field, $section, $default, $scope ) );
 
 		$name 			= $scope == 'option' ? $field['id'] : "{$section['id']}[{$field['id']}]";
-		$label 			= $field['label'];
+		$label 			= isset( $field['label'] ) ? $field['label'] : '';
 		$id 			= "{$section['id']}-{$field['id']}";
 
 		$class 			= "cx-field cx-field-{$field['type']}";
