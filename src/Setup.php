@@ -17,12 +17,12 @@ class Setup extends Base {
 
 	public function __construct( $plugin ) {
 
-		$this->plugin 	= $plugin;
-		$this->server 	= $this->plugin['server'];
-		$this->slug 	= $this->plugin['TextDomain'];
-		$this->name 	= $this->plugin['Name'];
-		$this->steps 	= $this->plugin['steps'];
-		$this->admin_url = admin_url( 'admin.php' );
+		$this->plugin 		= $plugin;
+		$this->server 		= $this->plugin['server'];
+		$this->slug 		= $this->plugin['TextDomain'];
+		$this->name 		= $this->plugin['Name'];
+		$this->steps 		= $this->plugin['steps'];
+		$this->admin_url	= admin_url( 'admin.php' );
 		$this->top_heading 	= isset( $this->plugin['hide_top_heading'] ) ? $this->plugin['hide_top_heading'] : false;
 
 		$this->action( 'admin_menu', 'add_pseudo_menu' );
@@ -32,7 +32,7 @@ class Setup extends Base {
 	}
 
 	public function enqueue_scripts() {
-		if ( !isset( $_GET['page'] ) || "{$this->slug}_setup" !== $_GET['page'] ) {
+		if ( ! isset( $_GET['page'] ) || "{$this->slug}_setup" !== $_GET['page'] ) {
 		    return;
 		}
 
@@ -153,6 +153,7 @@ class Setup extends Base {
 	}
 
 	public function footer() {
+		$config = $this->step_config( $this->current_step() );
 		?>
 								<div class="cx-wizard-btns">
 									<?php 
@@ -161,10 +162,10 @@ class Setup extends Base {
 									$next_step 		= $this->next_step();
 									$prev_step_url 	= $this->get_step_url( $prev_step );
 									$disabled		= $prev_step == $current_step ? 'disabled' : '';
-									$previous_text 	= __( 'Previous', 'cx-plugin' );
-									$button_text	= $current_step == $next_step ? __( 'Finish', 'cx-plugin' ) : __( 'Next', 'cx-plugin' );
+									$previous_text 	= $config['previous_text'] ? : __( 'Previous', 'cx-plugin' );
+									$next_text		= $current_step == $next_step ? __( 'Finish', 'cx-plugin' ) : ( $config['next_text'] ? : __( 'Next', 'cx-plugin' ) );
 									echo "<a class='cx-wizard-btn prev {$disabled}' href='{$prev_step_url}'>{$previous_text}</a>";
-									echo "<button id='{$current_step}-btn' class='cx-wizard-btn next'>{$button_text}</button>";
+									echo "<button id='{$current_step}-btn' class='cx-wizard-btn next'>{$next_text}</button>";
 									?>
 								</div>
 							</div>
@@ -196,6 +197,10 @@ class Setup extends Base {
 		}
 
 		return array_keys( $this->steps )[0];
+	}
+
+	public function step_config( $step ) {
+		return $this->steps[ $step ];
 	}
 
 	/**
