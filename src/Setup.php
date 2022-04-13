@@ -73,8 +73,11 @@ class Setup extends Base {
 				<?php do_action( 'admin_print_scripts' ); ?>
 			</head>
 			<body class="cx-setup wp-core-ui cx-wizard-body-panel">
-			<div class="cx-wizard-container">
-			<h1 class="cx-wizard-heading <?php echo $hide_title ?>"><a href="<?php echo $this->get_step_url( array_keys( $this->steps )[0] ); ?>"><?php echo $this->name; ?></a></h1>
+				<div class="cx-wizard-wrap">
+					<h1 class="cx-wizard-heading <?php echo $hide_title ?>">
+						<a href="<?php echo $this->get_step_url( array_keys( $this->steps )[0] ); ?>"><?php echo $this->name; ?></a>
+					</h1>
+					<div class="cx-wizard-container">
 		<?php
 	}
 
@@ -155,21 +158,22 @@ class Setup extends Base {
 	public function footer() {
 		$config = $this->step_config( $this->current_step() );
 		?>
-								<div class="cx-wizard-btns">
-									<?php 
-									$prev_step 		= $this->previous_step();
-									$current_step 	= $this->current_step();
-									$next_step 		= $this->next_step();
-									$prev_step_url 	= $this->get_step_url( $prev_step );
-									$disabled		= $prev_step == $current_step ? 'disabled' : '';
-									$previous_text 	= $config['previous_text'] ? : __( 'Previous', 'cx-plugin' );
-									$next_text		= $current_step == $next_step ? __( 'Finish', 'cx-plugin' ) : ( $config['next_text'] ? : __( 'Next', 'cx-plugin' ) );
-									echo "<a class='cx-wizard-btn prev {$disabled}' href='{$prev_step_url}'>{$previous_text}</a>";
-									echo "<button id='{$current_step}-btn' class='cx-wizard-btn next'>{$next_text}</button>";
-									?>
+									<div class="cx-wizard-btns">
+										<?php 
+										$prev_step 		= $this->previous_step();
+										$current_step 	= $this->current_step();
+										$next_step 		= $this->next_step();
+										$prev_step_url 	= $this->get_step_url( $prev_step );
+										$disabled		= $prev_step == $current_step ? 'disabled' : '';
+										$previous_text 	= isset( $config['previous_text'] ) ? $config['previous_text'] : __( 'Previous', 'cx-plugin' );
+										$next_text		= $current_step == $next_step ? __( 'Finish', 'cx-plugin' ) : ( isset( $config['next_text'] ) ? $config['next_text'] : __( 'Next', 'cx-plugin' ) );
+										echo "<a class='cx-wizard-btn prev {$disabled}' href='{$prev_step_url}'>{$previous_text}</a>";
+										echo "<button id='{$current_step}-btn' class='cx-wizard-btn next'>{$next_text}</button>";
+										?>
+									</div>
 								</div>
-							</div>
-						</form>
+							</form>
+						</div>
 					</div>
 				</div>
 			</body>

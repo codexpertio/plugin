@@ -2,19 +2,21 @@
 	background: #f0f0f0;
 	font-family: 'Quicksand', sans-serif;
 }
+.cx-wizard-wrap {
+    padding: 5px 0 40px 0;
+}
 .cx-wizard-container {
 	width: 960px;
 	margin: auto;
-	background: #f6f7f7;
+	background: #fff;
 	padding: 24px;
-	border-radius: 10px;
+	border-radius: 5px;
+	box-shadow: rgb(9 30 66 / 25%) 0px 8px 16px -4px, rgb(9 30 66 / 31%) 0px 0px 1px;
 }
 .cx-setup.wp-core-ui.cx-wizard-body-panel {
-	background: #f0f0f0;
-	display: flex;
+	background: #fbfafaa3;
 	justify-content: center;
 	align-items: center;
-	height: 100vh;
 }
 .cx-wizard-heading {
 	text-align: center;
@@ -70,6 +72,7 @@
   border-radius: 50%;
   background: #ccc;
   margin-bottom: 6px;
+  color: #8b8b8b;
 }
 .cx-wizard-stepper-item.current-step {
   font-weight: bold;
