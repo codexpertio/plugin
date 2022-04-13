@@ -40,6 +40,12 @@ class Setup extends Base {
         wp_enqueue_style( 'codexpert-product-wizard', plugins_url( 'assets/css/wizard.css', __FILE__ ), [], '' );
     }
 
+    public function get_logo() {
+    	if( ! isset( $this->plugin['icon'] ) ) return '';
+
+    	echo "<img class='cx-wizard-icon' src='{$this->plugin['icon']}' />";
+    }
+
 	/**
 	 * Add admin menus/screens.
 	 */
@@ -53,7 +59,6 @@ class Setup extends Base {
 		}
 
 		$this->header();
-		$this->pagination();
 		$this->body();
 		$this->footer();
 		exit;
@@ -75,8 +80,12 @@ class Setup extends Base {
 			<body class="cx-setup wp-core-ui cx-wizard-body-panel">
 				<div class="cx-wizard-wrap">
 					<h1 class="cx-wizard-heading <?php echo $hide_title ?>">
-						<a href="<?php echo $this->get_step_url( array_keys( $this->steps )[0] ); ?>"><?php echo $this->name; ?></a>
+						<a href="<?php echo $this->get_step_url( array_keys( $this->steps )[0] ); ?>">
+							<?php $this->get_logo(); ?>
+							<?php echo $this->name; ?>
+						</a>
 					</h1>
+					<?php $this->pagination(); ?>
 					<div class="cx-wizard-container">
 		<?php
 	}
@@ -108,8 +117,8 @@ class Setup extends Base {
 
 				echo "
 				  <div class='cx-wizard-stepper-item cx-step-{$count} {$classes} {$passed}'>
-				    <div class='cx-wizard-step-counter'>{$count}</div>
 				    <div class='cx-wizard-step-name'><a href='{$url}'>{$data['label']}</a></div>
+				    <div class='cx-wizard-step-counter'></div>
 				  </div>
 				";
 
@@ -151,7 +160,7 @@ class Setup extends Base {
 
 		// if a string passed
 		elseif( isset( $this->steps[ $this->current_step() ]['content'] ) ) {
-			echo $this->steps[ $this->current_step() ]['content'];
+			echo wpautop( $this->steps[ $this->current_step() ]['content'] );
 		}
 	}
 
@@ -167,8 +176,8 @@ class Setup extends Base {
 										$disabled		= $prev_step == $current_step ? 'disabled' : '';
 										$previous_text 	= isset( $config['previous_text'] ) ? $config['previous_text'] : __( 'Previous', 'cx-plugin' );
 										$next_text		= $current_step == $next_step ? __( 'Finish', 'cx-plugin' ) : ( isset( $config['next_text'] ) ? $config['next_text'] : __( 'Next', 'cx-plugin' ) );
-										echo "<a class='cx-wizard-btn prev {$disabled}' href='{$prev_step_url}'>{$previous_text}</a>";
-										echo "<button id='{$current_step}-btn' class='cx-wizard-btn next'>{$next_text}</button>";
+										echo "<a class='cx-wizard-btn btn-hero prev {$disabled}' href='{$prev_step_url}'>{$previous_text}</a>";
+										echo "<button id='{$current_step}-btn' class='cx-wizard-btn btn-hero btn-primary next'>{$next_text}</button>";
 										?>
 									</div>
 								</div>
