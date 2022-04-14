@@ -4,7 +4,7 @@
 }
 .cx-wizard-wrap {
     padding: 5px 0 40px 0;
-    width: 690px;
+    width: 800px;
     margin: 0 auto;
 }
 .cx-wizard-container {
@@ -22,13 +22,12 @@
 .cx-wizard-heading {
 	text-align: center;
 	color: #4b4c4e;
-	font-family: 'Quicksand', sans-serif;
 }
 .cx-wizard-heading.hide_title {
 	display: none;
 }
 .cx-wizard-heading a{
-	color: #4b4c4e;
+	color: #000;
 	text-decoration: none;
 }
 .cx-wizard-icon {

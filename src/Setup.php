@@ -36,8 +36,7 @@ class Setup extends Base {
 		    return;
 		}
 
-		wp_enqueue_style( 'googleapis', 'https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap' );
-        wp_enqueue_style( 'codexpert-product-wizard', plugins_url( 'assets/css/wizard.css', __FILE__ ), [], '' );
+		wp_enqueue_style( 'codexpert-product-wizard', plugins_url( 'assets/css/wizard.css', __FILE__ ), [], '' );
     }
 
     public function get_logo() {
