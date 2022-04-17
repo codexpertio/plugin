@@ -167,6 +167,6 @@ button.cx-wizard-btn {
 	font-weight: 400;
 }
 .cx-wizard-btn.disabled {
-	display: none;
+	/*display: none;*/
 }
 /*Footer button style end*/

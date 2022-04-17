@@ -171,12 +171,19 @@ class Setup extends Base {
 										$prev_step 		= $this->previous_step();
 										$current_step 	= $this->current_step();
 										$next_step 		= $this->next_step();
-										$prev_step_url 	= $this->get_step_url( $prev_step );
+										$prev_step_url 	= isset( $config['prev_url'] ) ? $config['prev_url'] : $this->get_step_url( $prev_step );
 										$disabled		= $prev_step == $current_step ? 'disabled' : '';
-										$previous_text 	= isset( $config['previous_text'] ) ? $config['previous_text'] : __( 'Previous', 'cx-plugin' );
+										$prev_text 		= isset( $config['prev_text'] ) ? $config['prev_text'] : __( 'Previous', 'cx-plugin' );
 										$next_text		= $current_step == $next_step ? __( 'Finish', 'cx-plugin' ) : ( isset( $config['next_text'] ) ? $config['next_text'] : __( 'Next', 'cx-plugin' ) );
-										echo "<a class='cx-wizard-btn btn-hero prev {$disabled}' href='{$prev_step_url}'>{$previous_text}</a>";
-										echo "<button id='{$current_step}-btn' class='cx-wizard-btn btn-hero btn-primary next'>{$next_text}</button>";
+
+										echo "<a class='cx-wizard-btn btn-hero prev {$disabled}' href='{$prev_step_url}'>{$prev_text}</a>";
+
+										if( ! isset( $config['next_url'] ) ) {
+											echo "<button id='{$current_step}-btn' class='cx-wizard-btn btn-hero btn-primary next'>{$next_text}</button>";
+										}
+										else {
+											echo "<a id='{$current_step}-btn' class='cx-wizard-btn btn-hero btn-primary next' href='{$config['next_url']}'>{$next_text}</a>";
+										}
 										?>
 									</div>
 								</div>
@@ -191,7 +198,7 @@ class Setup extends Base {
 
 	public function save_setup() {
 		$current_step = $this->current_step();
-		if( !is_null( $current_action = $this->steps[ $current_step ]['action'] ) ) {
+		if( isset( $this->steps[ $current_step ]['action'] ) && ! is_null( $current_action = $this->steps[ $current_step ]['action'] ) ) {
 			if( method_exists( $current_action[0], $current_action[1] ) || function_exists( $current_action ) ) {
 				call_user_func( $current_action );
 				if( isset( $_GET['saved'] ) ) {
