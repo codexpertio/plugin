@@ -142,7 +142,10 @@ abstract class Base {
 					$sanitized[ $key ] = $this->sanitize( $value, $type );
 				}
 				else {
-					$sanitized[ $key ] = $this->sanitize( $value, 'text' );
+					// identify textarea to fix possible linebreak issues
+					$_type = count( explode( PHP_EOL, $value ) ) > 1 ? 'textarea' : 'text';
+
+					$sanitized[ $key ] = $this->sanitize( $value, $_type );
 				}
 			}
 
