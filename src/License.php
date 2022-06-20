@@ -112,7 +112,8 @@ class License {
 		unset( $query['pb-license'] );
 		unset( $query['pb-nonce'] );
 		unset( $query['key'] );
-		wp_redirect( $this->license_page );
+		// wp_redirect( $this->license_page );
+		wp_redirect( add_query_arg( $query, admin_url( 'admin.php' ) ) );
 	}
 
 	public function enqueue_scripts() {
