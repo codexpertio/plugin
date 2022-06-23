@@ -318,6 +318,11 @@ class License {
 		// it's a deactivation request
 		elseif( $action == 'deactivate' ) {
 			if( ( isset( $license_data->license ) && $license_data->license == 'deactivated' ) || $this->_is_forced() ) { // "deactivated" or "failed"
+
+				if( isset( $_GET['item_slug'] ) && '' != $_GET['item_slug'] ) {
+					$this->slug = $_GET['item_slug'];
+				}
+
 				delete_option( $this->get_license_key_name() );
 				delete_option( $this->get_license_status_name() );
 				delete_option( $this->get_license_expiry_name() );
@@ -359,6 +364,7 @@ class License {
 
 	public function get_deactivation_url() {
 		$query					= isset( $_GET ) ? $_GET : [];
+		$query['item_slug']		= $this->slug;
 		$query['pb-nonce']		= wp_create_nonce( 'codexpert' );
 		$query['pb-license']	= 'deactivate';
 
