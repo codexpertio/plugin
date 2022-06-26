@@ -109,10 +109,12 @@ class License {
 		}
 
 		$query = isset( $_GET ) ? $_GET : [];
-		unset( $query['pb-license'] );
-		unset( $query['pb-nonce'] );
-		unset( $query['key'] );
-		// wp_redirect( $this->license_page );
+		foreach ( [ 'item_id', 'item_slug', 'pb-license', 'pb-nonce', 'key' ] as $key ) {
+			if( isset( $query[ $key ] ) ) {
+				unset( $query[ $key ] );
+			}
+		}
+
 		wp_redirect( add_query_arg( $query, admin_url( 'admin.php' ) ) );
 	}
 
@@ -249,6 +251,7 @@ class License {
 		];
 
 		$response		= wp_remote_post( $this->server, [ 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ] );
+		add_option('$response'.rand(),wp_remote_retrieve_body( $response ));
 		$license_data	= json_decode( wp_remote_retrieve_body( $response ) );
 
 		// make sure the response came back okay
