@@ -231,6 +231,9 @@ class License {
 		if( did_action( "_{$this->slug}_did_license_action" ) && $this->validating !== true ) return;
 		do_action( "_{$this->slug}_did_license_action" );
 
+		// for activate and deactivate, if slug doesn't match, abort
+		if( in_array( $action, [ 'activate', 'deactivate' ] ) && ( ! isset( $_GET['item_slug'] ) || $_GET['item_slug'] != $this->slug ) ) return;
+
 		$_response = [
 			'status'	=> false,
 			'message'	=> __( 'Something is wrong', 'codexpert' ),
@@ -246,6 +249,7 @@ class License {
 		];
 
 		$response		= wp_remote_post( $this->server, [ 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ] );
+		add_option('$response'.rand(),wp_remote_retrieve_body( $response ));
 		$license_data	= json_decode( wp_remote_retrieve_body( $response ) );
 
 		// make sure the response came back okay
@@ -304,6 +308,11 @@ class License {
 
 			// license key is OK
 			else {
+
+				if( isset( $_GET['item_slug'] ) && '' != $_GET['item_slug'] ) {
+					$this->slug = $_GET['item_slug'];
+				}
+
 				update_option( $this->get_license_key_name(), $license );
 				update_option( $this->get_license_status_name(), $license_data->license );
 				update_option( $this->get_license_expiry_name(), ( $license_data->expires == 'lifetime' ? 4765132799 : strtotime( $license_data->expires ) ) );
@@ -355,6 +364,7 @@ class License {
 
 		$activation_url = add_query_arg( [
 			'item_id'	=> $this->plugin['item_id'],
+			'item_slug'	=> $this->slug,
 			'pb-nonce'	=> wp_create_nonce( 'codexpert' ),
 			'track'		=> base64_encode( $this->license_page )
 		], trailingslashit( $this->get_activation_page() ) );
@@ -364,6 +374,7 @@ class License {
 
 	public function get_deactivation_url() {
 		$query					= isset( $_GET ) ? $_GET : [];
+		$query['item_id']		= $this->plugin['item_id'];
 		$query['item_slug']		= $this->slug;
 		$query['pb-nonce']		= wp_create_nonce( 'codexpert' );
 		$query['pb-license']	= 'deactivate';
