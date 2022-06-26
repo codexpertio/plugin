@@ -249,7 +249,6 @@ class License {
 		];
 
 		$response		= wp_remote_post( $this->server, [ 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ] );
-		add_option('$response'.rand(),wp_remote_retrieve_body( $response ));
 		$license_data	= json_decode( wp_remote_retrieve_body( $response ) );
 
 		// make sure the response came back okay
