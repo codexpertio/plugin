@@ -132,19 +132,17 @@ class License {
 		// not activated
 		if( ! $this->_is_activated() ) {
 
-			$notice = '<h3>' . sprintf( __( 'Alert: Please activate your license for <strong>%s</strong>.', 'codexpert' ), $this->name ) . '</h3>';
-			$notice .= '<p>' . sprintf( __( 'In order to enjoy the features of <strong>%s</strong>, you need to activate the license first. Sorry, but the plugin won\'t work without activation!', 'codexpert' ), $this->name ) . '</p>';
-			$notice .= '<p><a href="' . $this->get_activation_url() . '" class="button button-primary">' . __( 'Activate License', 'codexpert' ) . '</a></p>';
+			$notice = '';
+			$notice .= '<p>' . sprintf( __( '<strong>ALERT:</strong> In order to enjoy the features of <strong>%1$s</strong>, you need to activate the license first. Sorry, but the plugin won\'t work without activation! Please <a href="%2$s">activate it now</a>.', 'codexpert' ), $this->name, $this->get_activation_url() ) . '</p>';
 
-			Notice::add( $notice );
+			Notice::add( $notice, 'error', true );
 		}
 
 		// about to expire?
 		if( $this->_is_activated() && ( time() + apply_filters( 'codexpert-expiry-notice-time', MONTH_IN_SECONDS, $this ) ) > ( $expiry = get_option( $this->get_license_expiry_name() ) ) && time() < $expiry ) {
 
-			$notice = '<h3>' . sprintf( __( 'Attention: %s is expiring..', 'codexpert' ), $this->name ) . '</h3>';
-			$notice .= '<p>' . sprintf( __( 'Your license for <strong>%1$s</strong> is about to expire in <strong>%2$s</strong>. The plugin will stop working without a valid license key. Renew your license now and get a special <strong>%3$s discount</strong>. Offer ends soon!', 'codexpert' ), $this->name, human_time_diff( $expiry, time() ), '25%' ) . '</p>';
-			$notice .= '<p><a href="' . $this->get_renewal_url()  . '" class="button button-primary" target="_blank">' . __( 'Renew it now', 'codexpert' ) . '</a></p>';
+			$notice = '';
+			$notice .= '<p>' . sprintf( __( '<strong>ALERT:</strong> Your license for <strong>%1$s</strong> is about to expire in <strong>%2$s</strong>. The plugin will stop working without a valid license key. <a href="%3$s">Renew your license</a> now and get a special <strong>%4$s discount</strong>!', 'codexpert' ), $this->name, human_time_diff( $expiry, time() ), $this->get_renewal_url(), '25%' ) . '</p>';
 
 			Notice::add( $notice, 'error', true );
 		}
@@ -152,11 +150,10 @@ class License {
 		// expired to invalid license?
 		if( $this->_is_activated() && ( $this->_is_invalid() || $this->_is_expired() ) && apply_filters( 'codexpert-show_validation_notice', true, $this->plugin ) ) {
 
-			$notice = '<h3>' . sprintf( __( 'Warning: %s cannot connect to the server!', 'codexpert' ), $this->name ) . '</h3>';
-			$notice .= '<p>' . sprintf( __( 'It looks like <strong>%1$s</strong> can\'t connect to our server and is unable to receive updates! The plugin might stop working if it\'s not connected.', 'codexpert' ), $this->name ) . '</p>';
-			$notice .= '<p><a href="' . $this->get_deactivation_url() . '" class="button button-primary">' . __( 'Reconnect now', 'codexpert' ) . '</a></p>';
+			$notice = '';
+			$notice .= '<p>' . sprintf( __( '<strong>WARNING:</strong> It looks like <strong>%1$s</strong> can\'t connect to our server and is unable to receive updates! The plugin might stop working if it\'s not connected. <a href="%2$s">Reconnect Now</a>.', 'codexpert' ), $this->name, $this->get_deactivation_url() ) . '</p>';
 
-			Notice::add( $notice, 'warning' );
+			Notice::add( $notice, 'warning', true );
 		}
 	}
 
