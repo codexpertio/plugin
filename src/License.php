@@ -142,7 +142,7 @@ class License {
 		if( $this->_is_activated() && ( time() + apply_filters( 'codexpert-expiry-notice-time', MONTH_IN_SECONDS, $this ) ) > ( $expiry = get_option( $this->get_license_expiry_name() ) ) && time() < $expiry ) {
 
 			$notice = '';
-			$notice .= '<p>' . sprintf( __( '<strong>ALERT:</strong> Your license for <strong>%1$s</strong> is about to expire in <strong>%2$s</strong>. The plugin will stop working without a valid license key. <a href="%3$s">Renew your license</a> now and get a special <strong>%4$s discount</strong>!', 'codexpert' ), $this->name, human_time_diff( $expiry, time() ), $this->get_renewal_url(), '25%' ) . '</p>';
+			$notice .= '<p>' . sprintf( __( '<strong>ALERT:</strong> Your license for <strong>%1$s</strong> is about to expire in <strong>%2$s</strong>. The plugin will stop working without a valid license key. <a href="%3$s">Renew your license</a> now and get a special <strong>%4$s discount</strong>!', 'codexpert' ), $this->name, human_time_diff( $expiry, time() ), $this->get_renewal_url(), '20%' ) . '</p>';
 
 			Notice::add( $notice, 'error', true );
 		}
@@ -325,20 +325,26 @@ class License {
 
 		// it's a deactivation request
 		elseif( $action == 'deactivate' ) {
-			if( ( isset( $license_data->license ) && $license_data->license == 'deactivated' ) || $this->_is_forced() ) { // "deactivated" or "failed"
+			// if( ( isset( $license_data->license ) && $license_data->license == 'deactivated' ) || $this->_is_forced() ) { // "deactivated" or "failed"
 
-				if( isset( $_GET['item_slug'] ) && '' != $_GET['item_slug'] ) {
-					$this->slug = $_GET['item_slug'];
-				}
+			// 	if( isset( $_GET['item_slug'] ) && '' != $_GET['item_slug'] ) {
+			// 		$this->slug = $_GET['item_slug'];
+			// 	}
 
-				delete_option( $this->get_license_key_name() );
-				delete_option( $this->get_license_status_name() );
-				delete_option( $this->get_license_expiry_name() );
-				delete_option( $this->get_license_meta_name() );
+			// 	delete_option( $this->get_license_key_name() );
+			// 	delete_option( $this->get_license_status_name() );
+			// 	delete_option( $this->get_license_expiry_name() );
+			// 	delete_option( $this->get_license_meta_name() );
 
-				$_response['status']	= true;
-				$_response['message'] = __( 'License deactivated', 'codexpert' );
-			}
+			// 	$_response['status']	= true;
+			// 	$_response['message'] = __( 'License deactivated', 'codexpert' );
+			// }
+
+			// want to deactivate? do it first without validating the license
+			delete_option( $this->get_license_key_name() );
+			delete_option( $this->get_license_status_name() );
+			delete_option( $this->get_license_expiry_name() );
+			delete_option( $this->get_license_meta_name() );
 		}
 
 		// it's a verification request
