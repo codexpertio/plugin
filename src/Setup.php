@@ -49,11 +49,13 @@ class Setup extends Base {
 	 * Add admin menus/screens.
 	 */
 	public function add_pseudo_menu() {
+		if( ! isset( $_GET['page'] ) || $_GET['page'] !== "{$this->slug}_setup" ) return;
+
 		add_dashboard_page( '', '', 'manage_options', "{$this->slug}_setup", '' );
 	}
 
 	public function render_content() {
-		if ( !isset( $_GET['page'] ) || "{$this->slug}_setup" !== $_GET['page'] ) {
+		if ( ! isset( $_GET['page'] ) || "{$this->slug}_setup" !== $_GET['page'] ) {
 		    return;
 		}
 
