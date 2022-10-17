@@ -32,10 +32,10 @@ class Feature extends Base {
 		$this->name 	= $this->plugin['Name'];
 
 		$this->featured_plugins = [
-			'coschool',
 			'image-sizes',
 			'wc-affiliate',
 			'restrict-elementor-widgets',
+			'coschool',
 			'woolementor',
 		]; // last item in this array will show up first
 
