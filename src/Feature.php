@@ -32,7 +32,7 @@ class Feature extends Base {
 		$this->name 	= $this->plugin['Name'];
 
 		$this->featured_plugins = [
-			'search-logger',
+			'coschool',
 			'image-sizes',
 			'wc-affiliate',
 			'restrict-elementor-widgets',
