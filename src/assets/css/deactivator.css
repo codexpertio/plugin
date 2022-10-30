@@ -14,22 +14,23 @@
     width: 50%;
     background: #fff;
     padding: 10px;
-    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+}
+.cx-plugin-deactivation-survey-img > img {
+    max-width: 100%;
 }
 .cx-plugin-deactivation-survey-modal .cx-plugin-dsm-header {
 	padding: 0px 15px;
-	border-bottom: 1px solid #f1f1f1;
 }
 .cx-plugin-deactivation-survey-modal .cx-plugin-dsm-body {
     padding: 20px 15px;
 }
 .cx-plugin-deactivation-survey-modal .cx-plugin-deactivation-reasons {
-	display: flex;
-	gap: 10px;
-	margin-bottom: 15px;
-}
-.cx-plugin-deactivation-survey-modal .cx-plugin-deactivation-reasons .cx-plugin-deactivation-reason{
-	width: 16%;
+    display: grid;
+    gap: 10px;
+    margin-bottom: 15px;
+    grid-template-columns: repeat(3, 1fr);
 }
 .cx-plugin-dsm-header .cx-title {
     margin-top: 0;
@@ -72,7 +73,7 @@
 	overflow: hidden;
 }
 .cx-desc {
-	color: #bdbdbd;
+	color: #d7d7d7;
 	font-style: italic;
 	text-align: right;
 	margin: 0 auto 5px auto;

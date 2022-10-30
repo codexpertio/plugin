@@ -16,8 +16,8 @@ jQuery(function($){
 	} )
 
 	$(document).on( 'click', '.cx-consent-label', function(e){
-		var par = $(this).closest('.cx-plugin-dsm-header');
-		$('.cx-consent-text',par).slideToggle()
+		var desc = $(this).data('desc');
+		alert(desc)
 	} )
 	
 

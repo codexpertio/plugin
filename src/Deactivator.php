@@ -70,46 +70,52 @@ class Deactivator extends Base {
 		?>
 		<div class="cx-plugin-deactivation-survey-overlay">
 			<div class="cx-plugin-deactivation-survey-modal">
-				<form method="post" class="cx-plugin-deactivation-survey-form">
-					<input type="hidden" name="first_name" value="<?php echo $user->first_name ?>">
-					<input type="hidden" name="last_name" value="<?php echo $user->last_name ?>">
-					<input type="hidden" name="user_email" value="<?php echo $user->user_email ?>">
-					<input type="hidden" name="plugin" value="" id="cxd-plugin-name">
-					<input type="hidden" name="site_url" value="<?php echo site_url( '/' ) ?>">
-					<input type="hidden" name="action" value="cx-plugin-deactivation">
-					<div class="cx-plugin-dsm-header">
-						<h3 class="cx-heading">
-							<span class="cx-title"><?php _e( 'Sorry to see you go! ☹️ Would you mind telling us why are you deactivating so we can improve it? 🤔', 'codexpert' ) ?></span>
-							<span class="cx-desc cx-consent-label"><?php _e( 'Data we collect', 'codexpert' ); ?></span>
-						</h3>
-						<p class="cx-desc cx-consent-text" style="display: none;"><?php _e( 'It includes your name, email, site URL and the input you give here.', 'codexpert' ); ?></p>
-					</div>
-					<div class="cx-plugin-dsm-body">
-						<div class="cx-plugin-deactivation-reasons">
-							<?php
-							foreach ( $this->get_reasons() as $key => $label ) {
-								echo "
-								<div class='cx-plugin-deactivation-reason'>
-									<label for='{$key}'>{$label}</label>
-									<input type='checkbox' name='reason[]' value='{$key}' id='{$key}'>
-								</div>
-								";
-							}
-							?>
+				<div class="cx-plugin-deactivation-survey-form">
+					<form method="post" class="cx-plugin-deactivation-survey-form">
+						<input type="hidden" name="first_name" value="<?php echo $user->first_name ?>">
+						<input type="hidden" name="last_name" value="<?php echo $user->last_name ?>">
+						<input type="hidden" name="user_email" value="<?php echo $user->user_email ?>">
+						<input type="hidden" name="plugin" value="" id="cxd-plugin-name">
+						<input type="hidden" name="site_url" value="<?php echo site_url( '/' ) ?>">
+						<input type="hidden" name="action" value="cx-plugin-deactivation">
+						<div class="cx-plugin-dsm-header">
+							<h3 class="cx-heading">
+								<?php printf( __( 'We\'re so sorry to see you go, %s!', 'codexpert' ), $user->display_name ); ?>
+							</h3>
+							<p class="cx-heading"><?php _e( 'Would you mind telling us why you are deactivating so we can improve it? 🤔', 'codexpert' ) ?></p>
 						</div>
-						<div class="cx-plugin-dsm-reason-details">
-							<textarea class="cx-plugin-dsm-reason-details-input" name="explanation" rows="5" placeholder="Please Explain"></textarea>
+						<div class="cx-plugin-dsm-body">
+							<div class="cx-plugin-deactivation-reasons">
+								<?php
+								foreach ( $this->get_reasons() as $key => $label ) {
+									echo "
+									<div class='cx-plugin-deactivation-reason'>
+										<label for='{$key}'>{$label}</label>
+										<input type='checkbox' name='reason[]' value='{$key}' id='{$key}'>
+									</div>
+									";
+								}
+								?>
+							</div>
+							<div class="cx-plugin-dsm-reason-details">
+								<textarea class="cx-plugin-dsm-reason-details-input" name="explanation" rows="5" placeholder="Please Explain"></textarea>
+							</div>
 						</div>
-					</div>
-					<div class="cx-plugin-dsm-footer">
-						<a href="" class="button cx-plugin-dsm-skip-btn"><?php _e( 'Skip & Deactivate', 'codexpert' ) ?></a>
-						<div class="cx-plugin-dsm-submit">
-							<button class="button cx-plugin-dsm-btn cx-plugin-dsm-close"><?php _e( 'Cancel', 'codexpert' ) ?></button>
-							&nbsp;
-							<button class="button button-primary cx-plugin-dsm-btn cx-plugin-dsm-submit" type="submit"><?php _e( 'Submit & Deactivate', 'codexpert' ) ?></button>
+						<div class="cx-plugin-dsm-footer">
+							<a href="" class="button cx-plugin-dsm-skip-btn"><?php _e( 'Skip & Deactivate', 'codexpert' ) ?></a>
+							<div class="cx-plugin-dsm-submit">
+								<button class="button cx-plugin-dsm-btn cx-plugin-dsm-close"><?php _e( 'Cancel', 'codexpert' ) ?></button>
+								&nbsp;
+								<button class="button button-primary cx-plugin-dsm-btn cx-plugin-dsm-submit" type="submit"><?php _e( 'Submit & Deactivate', 'codexpert' ) ?></button>
+							</div>
 						</div>
-					</div>
-				</form>
+					</form>
+				</div>
+				<div class="cx-plugin-deactivation-survey-img">
+					<p class="cx-desc cx-consent-label" data-desc="<?php _e( 'It includes your name, email, site URL and the input you give here.', 'codexpert' ); ?>"><?php _e( 'What data we collect', 'codexpert' ); ?></p>
+					<img src="<?php echo plugins_url( 'assets/img/sorry.webp', __FILE__ ); ?>">
+
+				</div>
 			</div>
 		</div>
 		<?php
