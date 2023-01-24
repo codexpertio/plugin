@@ -34,7 +34,6 @@ class Widget extends Base {
 
 	public function hooks() {
 		$this->action( 'wp_dashboard_setup', 'dashboard_widget', 99 );
-		$this->action( 'wp_ajax_fetch-cx-blog', 'fetch_blog_posts', 99 );
 	}
 	
 	/**
@@ -64,32 +63,9 @@ class Widget extends Base {
 	 * @since 1.0
 	 */
 	public function callback_dashboard_widget() {
-		?>
-		<script type="text/javascript">
-			jQuery(function($){ $.get( ajaxurl, { action : 'fetch-cx-blog' }); });
-		</script>
-		<?php
-		$posts = get_option( 'codexpert-blog-json', [] );
 		$utm = [ 'utm_source' => 'dashboard', 'utm_medium' => 'metabox', 'utm_campaign' => 'blog-post' ];
 		
-		if( is_array( $posts ) && count( $posts ) > 0 ) :
-		
-		$posts = array_slice( $posts, 0, 5 );
-
-		echo '<ul id="cx-posts-wrapper">';
-		
-		foreach ( $posts as $post ) {
-
-			$post_link = add_query_arg( $utm, $post['link'] );
-			echo "
-			<li>
-				<a href='{$post_link}' target='_blank'><span class='cx-post-title'>{$post['title']['rendered']}</span></a>
-				" . wpautop( wp_trim_words( $post['content']['rendered'], 10 ) ) . "
-			</li>";
-		}
-		
-		echo '</ul>';
-		endif; // count( $posts ) > 0
+		echo '<ul id="cx-posts"></ul>'; // populated with React
 
 		$_links = apply_filters( 'cx-overview_links', [
 			'products'	=> [
@@ -112,11 +88,5 @@ class Widget extends Base {
 		}
 
 		echo '<p class="community-events-footer">' . implode( ' | ', $footer_links ) . '</p>';
-	}
-
-	public function fetch_blog_posts() {
-		if( ! is_wp_error( $_posts_data = wp_remote_get( 'https://codexpert.io/wp-json/wp/v2/posts/' ) ) && is_array( $posts = json_decode( $_posts_data['body'], true ) ) && count( $posts ) > 0 ) {
-		    update_option( 'codexpert-blog-json', $posts );
-		}
 	}
 }
