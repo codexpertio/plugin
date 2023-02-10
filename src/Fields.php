@@ -472,22 +472,34 @@ abstract class Fields extends Base {
 
 		$placeholder	= isset( $field['placeholder'] ) ? $field['placeholder'] : '';
 		$required 		= isset( $field['required'] ) && $field['required'] ? " required" : "";
-		$disabled 		= isset( $field['disabled'] ) && $field['disabled'] ? " disabled" : "";
 		$multiple 		= isset( $field['multiple'] ) && $field['multiple'] ? 'multiple' : false;
 		$options 		= isset( $field['options'] ) ? $field['options'] : [];
+
+		$disabled			= '';
+		$disabled_options	= [];
+		if( isset( $field['disabled'] ) && false !== $field['disabled'] ) {
+			if( true === $field['disabled'] )	 {
+				$disabled = 'disabled';
+			}
+			elseif( is_array( $field['disabled'] ) ) {
+				$disabled_options = $field['disabled'];
+			}
+		}
 
 		$html  = '';
 		if( $multiple ) {
 			$html .= "<select name='{$name}[]' id='{$id}' class='{$class}' multiple {$required} {$disabled} data-placeholder='{$placeholder}'>";
 			foreach ( $options as $key => $title ) {
-				$html .= "<option value='{$key}' " . ( in_array( $key, (array)$value ) ? 'selected' : '' ) . ">{$title}</option>";
+				$option_disabled = in_array( $key, $disabled_options ) ? 'disabled' : '';
+				$html .= "<option {$option_disabled} value='{$key}' " . ( in_array( $key, (array)$value ) ? 'selected' : '' ) . ">{$title}</option>";
 			}
 			$html .= '</select>';
 		}
 		else {
 			$html .= "<select name='{$name}' id='{$id}' class='{$class}' {$required} {$disabled} data-placeholder='{$placeholder}'>";
 			foreach ( $options as $key => $title ) {
-				$html .= "<option value='{$key}' " . selected( $value, $key, false ) . ">{$title}</option>";
+				$option_disabled = in_array( $key, $disabled_options ) ? 'disabled' : '';
+				$html .= "<option {$option_disabled} value='{$key}' " . selected( $value, $key, false ) . ">{$title}</option>";
 			}
 			$html .= '</select>';
 		}
