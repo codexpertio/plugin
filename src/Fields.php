@@ -270,7 +270,14 @@ abstract class Fields extends Base {
 	 * Populates a single input field
 	 */
 	public function populate( $field, $section, $scope = 'option' ) {
-		if ( in_array( $field['type'], [ 'text', 'number', 'email', 'url', 'password', 'color', 'range', 'date', 'time' ] ) ) {
+
+		if( isset( $field['content'] ) && $field['content'] != '' ) {
+			echo $field['content'];
+		}
+		elseif( isset( $field['template'] ) && $field['template'] != '' && file_exists( $field['template'] ) ) {
+			include $field['template'];
+		}
+		elseif ( in_array( $field['type'], [ 'text', 'number', 'email', 'url', 'password', 'color', 'range', 'date', 'time' ] ) ) {
 			$callback_fn = 'field_text';
 		}
 		else {
@@ -607,8 +614,19 @@ abstract class Fields extends Base {
 			$content .= "<div class='cx-tab-content' id='cx-tab-{$section['id']}-{$id}' style='display: {$cnt_display}'>";
 			
 			ob_start();
-			$this->populate_fields( $tab['fields'], $section, $scope );
-			$content .= ob_get_clean();
+
+			if( isset( $tab['content'] ) && $tab['content'] != '' ) {
+				$content .= $tab['content'];
+			}
+			elseif( isset( $tab['template'] ) && $tab['template'] != '' && file_exists( $tab['template'] ) ) {
+				include $tab['template'];
+				$content .= ob_get_clean();
+			}
+			else {
+				$this->populate_fields( $tab['fields'], $section, $scope );
+				$content .= ob_get_clean();
+			}
+			
 			ob_flush();
 
 			$content .= "</div>";
