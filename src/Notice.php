@@ -80,7 +80,7 @@ class Notice extends Base {
 
 	public function print() {
 
-		if( did_action( 'cx-notice' ) ) return; // don't print notices more than once
+		if( did_action( 'cx-notice' ) || ! current_user_can( 'manage_options' ) ) return;
 		do_action( 'cx-notice' );
 
 		global $cx_notices;
