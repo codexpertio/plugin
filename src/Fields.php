@@ -218,7 +218,7 @@ abstract class Fields extends Base {
 		if( count( $fields ) > 0 ) :
 		foreach ( $fields as $field ) {
 		
-			do_action( 'cx-settings-beore-row', $field, $section );
+			do_action( 'cx-settings-before-row', $field, $section );
 
 			$_show_label = isset( $field['label'] ) && $field['type'] != 'tabs';
 
