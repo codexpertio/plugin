@@ -217,6 +217,8 @@ abstract class Fields extends Base {
 
 		if( count( $fields ) > 0 ) :
 		foreach ( $fields as $field ) {
+		
+			do_action( 'cx-settings-beore-row', $field, $section );
 
 			$_show_label = isset( $field['label'] ) && $field['type'] != 'tabs';
 
@@ -262,6 +264,8 @@ abstract class Fields extends Base {
 				echo "</div>
 				</div>";
 			}
+			
+			do_action( 'cx-settings-after-row', $field, $section );
 		}
 		endif; // if( count( $fields ) > 0 ) :
 	}
