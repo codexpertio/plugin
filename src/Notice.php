@@ -27,7 +27,7 @@ class Notice extends Base {
 		$this->slug 	= $this->plugin['TextDomain'];
 		$this->name 	= $this->plugin['Name'];
 		
-		self::hooks();
+		$this->hooks();
 	}
 
 	public function hooks(){
