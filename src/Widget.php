@@ -23,12 +23,7 @@ class Widget extends Base {
 	
 	public static $_instance;
 	
-	public function __construct( $plugin ) {
-		$this->plugin 	= $plugin;
-		$this->server 	= $this->plugin['server'];
-		$this->slug 	= $this->plugin['TextDomain'];
-		$this->name 	= $this->plugin['Name'];
-		
+	public function __construct() {
 		$this->hooks();
 	}
 
