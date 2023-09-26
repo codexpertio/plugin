@@ -108,7 +108,7 @@ abstract class Fields extends Base {
 		foreach ( $sections as $section ) {
 			$icon = $this->generate_icon( $section['icon'] );
 			$color = isset( $section['color'] ) ? $section['color'] : '#1c2327';
-			echo "<li class='cx-nav-tab' data-color='{$color}'><a href='#{$section['id']}'>{$icon}<span id='cx-nav-label-{$section['id']}' class='cx-nav-label'> {$section['label']}</span></a></li>";
+			echo "<li id='cx-nav-tab-{$section['id']}' class='cx-nav-tab' data-color='{$color}'><a href='#{$section['id']}'>{$icon}<span id='cx-nav-label-{$section['id']}' class='cx-nav-label'> {$section['label']}</span></a></li>";
 		}
 		echo '</ul>
 		</div><!--div class="cx-navs-wrapper"-->';
