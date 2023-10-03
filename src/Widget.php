@@ -15,12 +15,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Widget extends Base {
 
-	public $slug;
-	
-	public $name;
-	
-	public $server;
-	
 	public static $_instance;
 	
 	public function __construct() {

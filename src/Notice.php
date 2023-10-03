@@ -15,6 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Notice extends Base {
 	
+	public $server;
+	
 	public $slug;
 	
 	public $name;
