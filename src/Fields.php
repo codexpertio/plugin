@@ -156,7 +156,7 @@ abstract class Fields extends Base {
 			
 				do_action( 'cx-settings-after-title', $section );
 
-				if( ! isset( $section['top_btn'] ) || false !== $section['top_btn'] ) {
+				if( $show_form && ( ! isset( $section['top_btn'] ) || false !== $section['top_btn'] ) ) {
 					echo "<div id='cx-section-top_btn-{$section['id']}' class='cx-section-top_btn'>";
 					if( $reset_button ) echo "<button type='button' class='button button-hero cx-reset-button' data-option_name='{$section['id']}' data-_nonce='{$_nonce}'>{$reset_button}</button>&nbsp;";
 					if( $submit_button ) echo "<input type='submit' class='button button-hero button-primary cx-submit' value='{$submit_button}' />";
