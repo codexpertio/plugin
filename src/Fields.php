@@ -105,12 +105,12 @@ abstract class Fields extends Base {
 		echo '
 		<div class="cx-navs-wrapper" style="display: ' . $display . '">
 			<ul class="cx-nav-tabs">';
-		foreach ( $sections as $section ) {
-			$icon = $this->generate_icon( $section['icon'] );
-			$color = isset( $section['color'] ) ? $section['color'] : '#1c2327';
-			echo "<li id='cx-nav-tab-{$section['id']}' class='cx-nav-tab' data-color='{$color}'><a href='#{$section['id']}'>{$icon}<span id='cx-nav-label-{$section['id']}' class='cx-nav-label'> {$section['label']}</span></a></li>";
-		}
-		echo '</ul>
+			foreach ( $sections as $section ) {
+				$icon = $this->generate_icon( $section['icon'] );
+				$color = isset( $section['color'] ) ? $section['color'] : '#1c2327';
+				echo "<li id='cx-nav-tab-{$section['id']}' class='cx-nav-tab' data-color='{$color}'><a href='#{$section['id']}'>{$icon}<span id='cx-nav-label-{$section['id']}' class='cx-nav-label'> {$section['label']}</span></a></li>";
+			}
+			echo '</ul>
 		</div><!--div class="cx-navs-wrapper"-->';
 
 		// form areas
@@ -124,23 +124,6 @@ abstract class Fields extends Base {
 
 			echo "<div id='{$section['id']}' class='cx-section' style='display:none'>";
 
-			if( ! isset( $section['no_heading'] ) || $section['no_heading'] !== true ) {
-				echo "<div class='cx-subheading'>";
-				
-				do_action( 'cx-settings-before-title', $section );
-			
-				echo "<span style='color: {$color}'>{$icon}</span> <span class='cx-subheading-text'>{$section['label']}</span>";
-			
-				do_action( 'cx-settings-after-title', $section );
-				
-				echo "</div>";
-			}
-			
-			
-			if( isset( $section['desc'] ) && $section['desc'] != '' ) {
-				echo "<p class='cx-desc'>{$section['desc']}</p>";
-			}
-
 			do_action( 'cx-settings-before-form', $section );
 
 			$fields = isset( $section['fields'] ) ? $section['fields'] : [];
@@ -148,21 +131,44 @@ abstract class Fields extends Base {
 			$show_form = isset( $section['hide_form'] ) && $section['hide_form'] ? false : true;
 			$show_form = apply_filters( 'cx-settigns-show-form', $show_form, $section );
 
-			if( $scope == 'option' && $show_form ) :
-				
-			$page_load = isset( $section['page_load'] ) && $section['page_load'] ? 1 : 0;
+			if( $scope == 'option' && $show_form ) {
+				$page_load = isset( $section['page_load'] ) && $section['page_load'] ? 1 : 0;
 
-			echo "<form id='cx-form-{$section['id']}' class='cx-form'>
-					<div id='cx-message-{$section['id']}' class='cx-message'>
-						<img src='" . plugins_url( 'assets/img/checked.png', __FILE__ ) . "' />
-						<p></p>
-					</div>
-					<input type='hidden' name='action' value='cx-settings' />
-					<input type='hidden' name='option_name' value='{$section['id']}' />
-					<input type='hidden' name='page_load' value='{$page_load}' />
-			";
-			wp_nonce_field();
-			endif; // if( $show_form ) :
+				echo "<form id='cx-form-{$section['id']}' class='cx-form'>
+						<div id='cx-message-{$section['id']}' class='cx-message'>
+							<img src='" . plugins_url( 'assets/img/checked.png', __FILE__ ) . "' />
+							<p></p>
+						</div>
+						<input type='hidden' name='action' value='cx-settings' />
+						<input type='hidden' name='option_name' value='{$section['id']}' />
+						<input type='hidden' name='page_load' value='{$page_load}' />
+				";
+
+				wp_nonce_field();
+			}
+
+			if( ! isset( $section['no_heading'] ) || $section['no_heading'] !== true ) {
+				echo "<div class='cx-subheading'>";
+				
+				do_action( 'cx-settings-before-title', $section );
+			
+				echo "<div class='cx-section-subheading' style='color: {$color}'>{$icon}</span> <span class='cx-subheading-text'>{$section['label']}</div>";
+			
+				do_action( 'cx-settings-after-title', $section );
+
+				if( ! isset( $section['top_btn'] ) || false !== $section['top_btn'] ) {
+					echo "<div id='cx-section-top_btn-{$section['id']}' class='cx-section-top_btn'>";
+					if( $reset_button ) echo "<button type='button' class='button button-hero cx-reset-button' data-option_name='{$section['id']}' data-_nonce='{$_nonce}'>{$reset_button}</button>&nbsp;";
+					if( $submit_button ) echo "<input type='submit' class='button button-hero button-primary cx-submit' value='{$submit_button}' />";
+					echo '</div>';
+				}
+
+				echo "</div>";
+			}
+			
+			if( isset( $section['desc'] ) && $section['desc'] != '' ) {
+				echo "<p class='cx-desc'>{$section['desc']}</p>";
+			}
 
 			do_action( 'cx-settings-before-fields', $section );
 
@@ -178,20 +184,22 @@ abstract class Fields extends Base {
 
 			do_action( 'cx-settings-after-fields', $section );
 
-			if( $scope == 'option' && $show_form ) :
-			$_is_sticky = isset( $section['sticky'] ) && !$section['sticky'] ? ' cx-nonsticky-controls' : ' cx-sticky-controls';
-			echo "<div class='cx-controls-wrapper{$_is_sticky}'>";
+			if( $scope == 'option' && $show_form ) {
+				$_is_sticky = isset( $section['sticky'] ) && ! $section['sticky'] ? ' cx-nonsticky-controls' : ' cx-sticky-controls';
+				echo "<div class='cx-controls-wrapper{$_is_sticky}'>";
 
-			if( $reset_button ) echo "<button type='button' class='button button-hero cx-reset-button' data-option_name='{$section['id']}' data-_nonce='{$_nonce}'>{$reset_button}</button>&nbsp;";
-			if( $submit_button ) echo "<input type='submit' class='button button-hero button-primary cx-submit' value='{$submit_button}' />";
-			echo '</div class="cx-controls-wrapper">
+				if( $reset_button ) echo "<button type='button' class='button button-hero cx-reset-button' data-option_name='{$section['id']}' data-_nonce='{$_nonce}'>{$reset_button}</button>&nbsp;";
+				if( $submit_button ) echo "<input type='submit' class='button button-hero button-primary cx-submit' value='{$submit_button}' />";
+
+				echo '</div class="cx-controls-wrapper">
 				</form>';
-			endif; // if( $show_form ) :
+			}
 
 			do_action( 'cx-settings-after-form', $section );
 
 			echo "</div><!--div id='{$section['id']}'-->";
 		}
+
 		echo '</div><!--div class="cx-sections-wrapper"-->
 			 <div class="cx-sidebar-wrapper">';
 
@@ -202,8 +210,7 @@ abstract class Fields extends Base {
 		</div><!--div class="wrap"-->
 		<div id="cx-overlay" style="display: none;">
 			<img src="' . plugins_url( 'assets/img/loading.gif', __FILE__ ) . '" />
-		</div>
-		';
+		</div>';
 
 		if( isset( $config['css'] ) && $config['css'] != '' ) {
 			echo "<style>{$config['css']}</style>";
