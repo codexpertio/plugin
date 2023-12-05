@@ -282,6 +282,8 @@ abstract class Fields extends Base {
 	 */
 	public function populate( $field, $section, $scope = 'option' ) {
 
+		$callback_fn = '';
+
 		if( isset( $field['content'] ) && $field['content'] != '' ) {
 			echo $field['content'];
 		}
@@ -295,7 +297,7 @@ abstract class Fields extends Base {
 			$callback_fn = "field_{$field['type']}";
 		}
 
-		if( method_exists( $this, $callback_fn ) ) {
+		if( $callback_fn != '' && method_exists( $this, $callback_fn ) ) {
 			return $this->$callback_fn( $field, $section, $scope );
 		}
 
