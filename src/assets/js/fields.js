@@ -124,8 +124,13 @@ jQuery(function ($) {
         $('#'+target).show()
     })
 
-    $(document).on('click', '.cx-repeater-add', function(e){
-        $(this).parent().before($(this).parent().clone()).find('input,select,textarea').val('')
+    $(document).on('click', '.cx-repeater-add', function(e) {
+        var $newClone = $(this).closest('.cx-repeatable').clone();
+        $newClone.find('input, textarea').val('');
+        $newClone.find('select').val(function() {
+            return $(this).find('option:first').val();
+        });
+        $(this).closest('.cx-repeatable').after($newClone);
     })
 
     $(document).on('click', '.cx-repeater-remove', function(e){
