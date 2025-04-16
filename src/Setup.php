@@ -226,7 +226,7 @@ class Setup extends Base {
 					if ( isset( $_POST['email'] ) && $_POST['email'] != '' ) {
 						$user 		= wp_get_current_user(); 
 						$response 	= wp_remote_post(
-							"https://my.pluggable.io/?fluentcrm=1&route=contact&hash={$this->hash}",
+							"{$this->server}/?fluentcrm=1&route=contact&hash={$this->hash}",
 							[
 								'body' => [
 									'email'      => sanitize_text_field( $_POST['email'] ),
