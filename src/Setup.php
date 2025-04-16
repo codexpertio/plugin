@@ -21,7 +21,7 @@ class Setup extends Base {
 
 	public $server;
 
-	public $hash;
+	public $hash_wizard;
 
 	public $slug;
 
@@ -37,7 +37,7 @@ class Setup extends Base {
 
 		$this->plugin 		= $plugin;
 		$this->server 		= $this->plugin['server'];
-		$this->hash 		= $this->plugin['hash'];
+		$this->hash_wizard 	= $this->plugin['hash_wizard'];
 		$this->slug 		= $this->plugin['TextDomain'];
 		$this->name 		= $this->plugin['Name'];
 		$this->steps 		= $this->plugin['steps'];
@@ -223,10 +223,10 @@ class Setup extends Base {
 			if( method_exists( $current_action[0], $current_action[1] ) || function_exists( $current_action ) ) {
 				call_user_func( $current_action );
 				if( isset( $_GET['saved'] ) ) {
-					if ( isset( $_POST['email'] ) && $_POST['email'] != '' ) {
+					if ( isset( $_POST['email'] ) && $_POST['email'] != '' && $this->hash_wizard != '' ) {
 						$user 		= wp_get_current_user(); 
 						$response 	= wp_remote_post(
-							"{$this->server}/?fluentcrm=1&route=contact&hash={$this->hash}",
+							"{$this->server}/?fluentcrm=1&route=contact&hash={$this->hash_wizard}",
 							[
 								'body' => [
 									'email'      => sanitize_text_field( $_POST['email'] ),
