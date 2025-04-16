@@ -35,7 +35,11 @@ class Setup extends Base {
 	
 	public function __construct( $plugin ) {
 
-		$this->plugin 		= $plugin;
+		$this->plugin	= wp_parse_args( $plugin, [
+			'server'	=> 'https://my.pluggable.io',
+			'hash_wizard'	=> 'a7719b8f-a43b-4c1d-aeb3-2823ef174f54'
+		] );
+		
 		$this->server 		= $this->plugin['server'];
 		$this->hash_wizard 	= $this->plugin['hash_wizard'];
 		$this->slug 		= $this->plugin['TextDomain'];
